@@ -167,35 +167,9 @@ export const rules: Rule[] = [
 		content: (
 			<>
 				wenn aussagen geschehen, wird man sich{' '}
-				<strong>nicht äußern</strong> – auch genannt{' '}
+				<strong>nicht äußern</strong> - auch genannt{' '}
 				<span className='italic text-primary'>disziplin</span> (nicht
 				lachen, augen schließen oder sonst irgendeine reaktion).
-			</>
-		),
-	},
-	{
-		content: (
-			<>
-				<code className='text-sm'>ironie</code> ist{' '}
-				<span className='text-destructive font-semibold'>
-					strengstens
-				</span>{' '}
-				untersagt, außer sie ist <strong>offensichtlich</strong> und{' '}
-				<em>wirklich lustig</em>.
-			</>
-		),
-		note: <>sollte jemand die ironie nicht erkennen, zählt sie nicht.</>,
-	},
-	{
-		content: (
-			<>
-				die <span className='text-primary'>regelauslegung</span> kann je
-				nach <span className='italic'>tagesform</span> angepasst werden
-				–{' '}
-				<span className='text-muted-foreground'>
-					beschwerden zwecklos
-				</span>
-				.
 			</>
 		),
 	},
