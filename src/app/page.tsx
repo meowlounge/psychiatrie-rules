@@ -5,7 +5,7 @@ import { RuleCard } from '@/components/rules-ui/rule-card';
 import { SignatureSection } from '@/components/rules-ui/signature';
 import { rules } from '@/rules';
 import { Shield } from 'lucide-react';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const STORAGE_KEY = 'psychiatrie_state';
 
