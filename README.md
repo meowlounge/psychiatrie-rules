@@ -1,94 +1,112 @@
-# Eagle Next.js Template
+# psychiatrie-rules
 
-A modern, opinionated Next.js 14+ template featuring TypeScript, app directory, dark/light/system theme toggle, and a clean, extendable component structure. Built for rapid prototyping and scalable production apps.
+Next.js App für psychiatrie-regeln mit Supabase als Datenquelle,
+Live-Updates via Supabase Realtime und stündlichem Keepalive.
 
----
+Der Discord-Bot ist extern.
+Diese Website liest Regeln live und kann mit einem kurzlebigen
+Admin-Link Regeln erstellen.
 
 ## Features
 
-- **Next.js 14+** with `/app` directory and server components
-- **TypeScript** for type safety
-- **Theme Toggle** (light/dark/system) using [next-themes](https://github.com/pacocoursey/next-themes)
-- **Reusable UI Components** (Button, Dropdown, Card, etc.)
-- **Lucide Icons** for modern SVG icons
-- **Custom Hooks** (e.g., `useHasMounted`)
-- **Tailwind CSS** for utility-first styling
-- **Ready-to-edit Home Page** with live reload
-- **Accessible, semantic markup**
-- **Easy to extend and customize**
+- Dynamische Regeln aus Supabase (`public.rules`)
+- Rule-Props: `is_new`, `is_limited_time`, Zeitfenster, Priorität
+- Live-Updates ohne Reload über Supabase Realtime
+- No-Login Admin-Flow via signiertem Link (`?admin=...`)
+- Stündlicher Supabase-Keepalive (`/api/cron/supabase-keepalive`)
 
----
+## Stack
 
-## Getting Started
+- Next.js 16 (App Router)
+- React 19 + TypeScript (strict)
+- Tailwind CSS + shadcn UI Komponenten
+- Supabase (`@supabase/supabase-js`)
+- Validation (`zod`)
 
-### 1. Clone the repository
+## Setup
 
-```bash
-git clone https://github.com/prodbyeagle/next-template.git
-cd next-template
-```
-
-### 2. Install dependencies
+### 1. Dependencies
 
 ```bash
-npm install
-# or
-bun i // bun update --latest
+bun install
 ```
 
-### 3. Run the development server
+### 2. Umgebungsvariablen
+
+`.env.local`:
 
 ```bash
-npm run dev
-# or
-bun dev
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SECRET_KEY=...
+RULES_ADMIN_TOKEN_SECRET=...
+ADMIN_LINK_ISSUER_SECRET=...
+APP_BASE_URL=https://deine-domain.tld # optional, empfohlen
+CRON_SECRET=... # optional, empfohlen für Keepalive-Route
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the app.
+Hinweis:
 
----
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` kann alternativ als
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` gesetzt werden.
 
-## Project Structure
+### 3. Supabase Schema ausrollen
 
+Führe `supabase/schema.sql` im Supabase SQL Editor aus.
+
+### 4. Realtime für `rules` aktivieren
+
+In Supabase unter Database -> Replication:
+
+- Realtime für Tabelle `public.rules` aktivieren
+
+## Keepalive (60 Minuten)
+
+- `vercel.json` enthält einen Cron `0 * * * *`
+- Endpoint: `GET /api/cron/supabase-keepalive`
+- Mit `CRON_SECRET` nur autorisierte Aufrufe erlaubt
+
+Wenn du nicht auf Vercel bist, rufe den Endpoint stündlich extern auf.
+
+## No-Login Admin-Link Flow
+
+1. Discord-Bot ruft `POST /api/admin-links` auf
+2. Bot sendet den erzeugten Link an einen Admin
+3. Admin öffnet `/?admin=<token>` und sieht das Rule-Form
+4. Rule-Create läuft über `POST /api/rules` mit Bearer-Token
+
+`POST /api/admin-links` Auth:
+
+- `Authorization: Bearer <ADMIN_LINK_ISSUER_SECRET>`
+- oder `x-admin-link-secret: <ADMIN_LINK_ISSUER_SECRET>`
+
+Beispiel Payload:
+
+```json
+{
+	"ttlMinutes": 30,
+	"actor": "discord-user-id",
+	"issuer": "discord-bot"
+}
 ```
-src/
-  app/                # App directory (Next.js 14+)
-    layout.tsx        # Root layout
-    page.tsx          # Home page
-  components/
-    eagle/            # Custom eagle components (e.g., theme-toggle)
-    ui/               # Reusable UI primitives (button, dropdown, etc.)
-  hooks/              # Custom React hooks
-  lib/                # Utilities and helpers
-public/               # Static assets
-```
 
----
+## Scripts
 
-## Customization
+- `bun dev` Entwicklungsserver
+- `bun run lint` Lint
+- `bun run build` Build
 
-- **UI Components:** Extend or modify components in [`src/components/ui/`](src/components/ui/) for your design system.
-- **Home Page:** Start building your app in [`src/app/page.tsx`](src/app/page.tsx).
+## Datenmodell
 
----
+Relevante Tabelle: `public.rules`
 
-## Dependencies
-
-- [Next.js](https://nextjs.org/)
-- [React](https://react.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
-- [lucide-react](https://lucide.dev/)
-
----
-
-## Author
-
-Created by **prodbyeagle**.
-
----
-
-## License
-
-[MIT](LICENSE)
+- `content text not null`
+- `note text`
+- `is_new boolean`
+- `is_limited_time boolean`
+- `limited_start_at timestamptz`
+- `limited_end_at timestamptz`
+- `is_active boolean`
+- `priority integer`
+- `created_by text`
+- `created_at`, `updated_at`
