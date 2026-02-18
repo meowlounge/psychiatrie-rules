@@ -154,7 +154,6 @@ export const SignatureSection: React.FC<SignatureSectionProps> = ({
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder='dein name...'
-								autoFocus
 							/>
 							<p className='text-xs text-muted-foreground'>
 								kleiner tipp: spitzname okay, solange du ihn mit ernstem

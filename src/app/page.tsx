@@ -121,7 +121,7 @@ export default function HomePage() {
         <div className='space-y-3 mb-12'>
           {rules.map((rule, index) => (
             <RuleCard
-              key={index}
+              key={rule.id}
               rule={rule}
               index={index}
               isChecked={checkedRules.has(index)}

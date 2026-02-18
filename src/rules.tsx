@@ -9,12 +9,14 @@ import {
 import { Code } from './components/eagle/code';
 
 export type Rule = {
+  id: string;
   content: ReactNode;
   note?: ReactNode;
 };
 
 export const rules: Rule[] = [
   {
+    id: 'rule-1',
     content: (
       <>
         sprechfehler müssen sofort{' '}
@@ -76,6 +78,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-2',
     content: (
       <>
         was in der <span className='text-primary'>psychiatrie</span>{' '}
@@ -85,6 +88,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-3',
     content: (
       <>
         in der <span className='text-primary'>psychiatrie</span> darf
@@ -97,6 +101,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-4',
     content: (
       <>
         wir schließen <span className='font-semibold'>niemanden</span>{' '}
@@ -111,6 +116,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-5',
     content: (
       <>
         man darf{' '}
@@ -122,6 +128,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-6',
     content: (
       <>
         die <span className='text-primary'>psychiatrie</span> sollte,
@@ -155,6 +162,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-7',
     content: (
       <>
         versprecher und bilder bitte{' '}
@@ -165,6 +173,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-8',
     content: (
       <>
         wenn aussagen geschehen, wird man sich{' '}
@@ -175,6 +184,7 @@ export const rules: Rule[] = [
     ),
   },
   {
+    id: 'rule-9',
     content: (
       <>
         social media links nur noch in entsprechenden apps senden ( tiktoks auf tiktok usw... )
