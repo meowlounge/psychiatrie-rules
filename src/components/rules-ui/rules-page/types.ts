@@ -53,8 +53,8 @@ export interface UseCreateRuleFormResult {
 	handleContentChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 	handleNoteChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	handlePriorityChange: (event: ChangeEvent<HTMLInputElement>) => void;
-	handleIsNewChange: (event: ChangeEvent<HTMLInputElement>) => void;
-	handleIsLimitedTimeChange: (event: ChangeEvent<HTMLInputElement>) => void;
+	handleIsNewChange: (isChecked: boolean) => void;
+	handleIsLimitedTimeChange: (isChecked: boolean) => void;
 	handleLimitedStartAtChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	handleLimitedEndAtChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	handleCreateRule: (event: FormEvent<HTMLFormElement>) => Promise<void>;

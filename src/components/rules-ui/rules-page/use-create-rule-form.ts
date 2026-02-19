@@ -53,31 +53,21 @@ export function useCreateRuleForm({
 		[]
 	);
 
-	const handleIsNewChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => {
-			setFormState((previousState) => ({
-				...previousState,
-				isNew: event.target.checked,
-			}));
-		},
-		[]
-	);
+	const handleIsNewChange = useCallback((isChecked: boolean) => {
+		setFormState((previousState) => ({
+			...previousState,
+			isNew: isChecked,
+		}));
+	}, []);
 
-	const handleIsLimitedTimeChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => {
-			const isLimitedTime = event.target.checked;
-
-			setFormState((previousState) => ({
-				...previousState,
-				isLimitedTime,
-				limitedStartAt: isLimitedTime
-					? previousState.limitedStartAt
-					: '',
-				limitedEndAt: isLimitedTime ? previousState.limitedEndAt : '',
-			}));
-		},
-		[]
-	);
+	const handleIsLimitedTimeChange = useCallback((isChecked: boolean) => {
+		setFormState((previousState) => ({
+			...previousState,
+			isLimitedTime: isChecked,
+			limitedStartAt: isChecked ? previousState.limitedStartAt : '',
+			limitedEndAt: isChecked ? previousState.limitedEndAt : '',
+		}));
+	}, []);
 
 	const handleLimitedStartAtChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {

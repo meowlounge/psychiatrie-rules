@@ -2,6 +2,7 @@
 
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
@@ -18,6 +19,7 @@ import {
 	type FormEvent,
 } from 'react';
 
+import { RuleFormFields } from './rule-form-fields';
 import {
 	createFormStateFromRule,
 	createInitialFormState,
@@ -51,7 +53,6 @@ export function EditRuleDialog({
 	);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [success, setSuccess] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (!rule || !isOpen) {
@@ -60,7 +61,6 @@ export function EditRuleDialog({
 
 		setFormState(createFormStateFromRule(rule));
 		setError(null);
-		setSuccess(null);
 	}, [isOpen, rule]);
 
 	const handleContentChange = useCallback(
@@ -93,31 +93,21 @@ export function EditRuleDialog({
 		[]
 	);
 
-	const handleIsNewChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => {
-			setFormState((previousState) => ({
-				...previousState,
-				isNew: event.target.checked,
-			}));
-		},
-		[]
-	);
+	const handleIsNewChange = useCallback((isChecked: boolean) => {
+		setFormState((previousState) => ({
+			...previousState,
+			isNew: isChecked,
+		}));
+	}, []);
 
-	const handleIsLimitedTimeChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => {
-			const isLimitedTime = event.target.checked;
-
-			setFormState((previousState) => ({
-				...previousState,
-				isLimitedTime,
-				limitedStartAt: isLimitedTime
-					? previousState.limitedStartAt
-					: '',
-				limitedEndAt: isLimitedTime ? previousState.limitedEndAt : '',
-			}));
-		},
-		[]
-	);
+	const handleIsLimitedTimeChange = useCallback((isChecked: boolean) => {
+		setFormState((previousState) => ({
+			...previousState,
+			isLimitedTime: isChecked,
+			limitedStartAt: isChecked ? previousState.limitedStartAt : '',
+			limitedEndAt: isChecked ? previousState.limitedEndAt : '',
+		}));
+	}, []);
 
 	const handleLimitedStartAtChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
@@ -146,7 +136,6 @@ export function EditRuleDialog({
 		}
 
 		setError(null);
-		setSuccess(null);
 		setIsSubmitting(true);
 
 		try {
@@ -170,7 +159,6 @@ export function EditRuleDialog({
 				return;
 			}
 
-			setSuccess('regel aktualisiert.');
 			await refreshRules();
 			onOpenChange(false);
 		} catch {
@@ -188,91 +176,56 @@ export function EditRuleDialog({
 		[handleSubmitUpdate]
 	);
 
+	const ruleReference = rule ? `#${rule.id.slice(0, 8)}` : null;
+
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='border-stone-700 bg-stone-900 text-stone-100 sm:max-w-lg'>
+			<DialogContent className='border-stone-700 bg-stone-900 text-stone-100 sm:max-w-2xl'>
 				<DialogHeader>
 					<DialogTitle className='text-sm uppercase tracking-[0.08em]'>
 						regel bearbeiten
 					</DialogTitle>
 					<DialogDescription className='text-xs text-stone-400'>
-						änderungen werden sofort live veröffentlicht
+						{ruleReference
+							? `änderungen an regel ${ruleReference}`
+							: 'änderungen werden sofort live veröffentlicht'}
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={handleSubmit} className='space-y-3'>
-					<textarea
-						value={formState.content}
-						onChange={handleContentChange}
-						placeholder='regeltext'
-						required
-						rows={4}
-						className={inputClassName}
+				<form onSubmit={handleSubmit} className='space-y-4'>
+					<RuleFormFields
+						idPrefix='edit-rule'
+						formState={formState}
+						inputClassName={inputClassName}
+						handleContentChange={handleContentChange}
+						handleNoteChange={handleNoteChange}
+						handlePriorityChange={handlePriorityChange}
+						handleIsNewChange={handleIsNewChange}
+						handleIsLimitedTimeChange={handleIsLimitedTimeChange}
+						handleLimitedStartAtChange={handleLimitedStartAtChange}
+						handleLimitedEndAtChange={handleLimitedEndAtChange}
 					/>
-					<input
-						type='text'
-						value={formState.note}
-						onChange={handleNoteChange}
-						placeholder='notiz (optional)'
-						className={inputClassName}
-					/>
-					<div className='grid grid-cols-1 gap-2 sm:grid-cols-3'>
-						<label className='flex items-center gap-2 text-xs text-stone-300'>
-							<input
-								type='checkbox'
-								checked={formState.isNew}
-								onChange={handleIsNewChange}
-								className='h-3 w-3 accent-stone-300'
-							/>
-							new
-						</label>
-						<label className='flex items-center gap-2 text-xs text-stone-300'>
-							<input
-								type='checkbox'
-								checked={formState.isLimitedTime}
-								onChange={handleIsLimitedTimeChange}
-								className='h-3 w-3 accent-stone-300'
-							/>
-							limited
-						</label>
-						<input
-							type='number'
-							value={formState.priority}
-							onChange={handlePriorityChange}
-							placeholder='priority'
-							className={inputClassName}
-						/>
+
+					<div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
+						<DialogClose asChild>
+							<button
+								type='button'
+								className={`${actionButtonClassName} border border-stone-700 bg-stone-900`}>
+								abbrechen
+							</button>
+						</DialogClose>
+						<button
+							type='submit'
+							disabled={isSubmitting}
+							className={actionButtonClassName}>
+							{isSubmitting
+								? 'wird gespeichert ...'
+								: 'änderungen speichern'}
+						</button>
 					</div>
-
-					{formState.isLimitedTime && (
-						<div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
-							<input
-								type='datetime-local'
-								value={formState.limitedStartAt}
-								onChange={handleLimitedStartAtChange}
-								className={inputClassName}
-							/>
-							<input
-								type='datetime-local'
-								value={formState.limitedEndAt}
-								onChange={handleLimitedEndAtChange}
-								className={inputClassName}
-							/>
-						</div>
-					)}
-
-					<button
-						type='submit'
-						disabled={isSubmitting}
-						className={actionButtonClassName}>
-						{isSubmitting
-							? 'wird gespeichert ...'
-							: 'änderungen speichern'}
-					</button>
 				</form>
 
 				{error && <p className='text-xs text-stone-400'>{error}</p>}
-				{success && <p className='text-xs text-stone-300'>{success}</p>}
 			</DialogContent>
 		</Dialog>
 	);
