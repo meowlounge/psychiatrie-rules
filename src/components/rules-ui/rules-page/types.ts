@@ -39,10 +39,9 @@ export interface UseAdminAuthResult {
 	canCreateRules: boolean;
 	isAuthBusy: boolean;
 	authError: string | null;
-	isStartingLogin: boolean;
+	isLoggingIn: boolean;
 	isSigningOut: boolean;
-	oauthProviderLabel: string;
-	handleStartLogin: () => Promise<void>;
+	handlePasswordLogin: (password: string) => Promise<void>;
 	handleSignOut: () => Promise<void>;
 }
 
@@ -60,16 +59,6 @@ export interface UseCreateRuleFormResult {
 	handleLimitedEndAtChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	handleCreateRule: (event: FormEvent<HTMLFormElement>) => Promise<void>;
 }
-
-export const oauthProviderLabelMap = {
-	discord: 'Discord',
-	github: 'GitHub',
-	google: 'Google',
-} as const;
-
-export type SupportedOauthProvider = keyof typeof oauthProviderLabelMap;
-
-export const defaultOauthProvider: SupportedOauthProvider = 'github';
 
 export function createInitialFormState(): RuleCreateFormState {
 	return {

@@ -16,6 +16,7 @@ import {
 	ShieldXIcon,
 	UserRoundIcon,
 } from 'lucide-react';
+import { useCallback, useState, type FormEvent } from 'react';
 
 interface AccountDialogProps {
 	canCreateRules: boolean;
@@ -23,11 +24,11 @@ interface AccountDialogProps {
 	accessToken: string | null;
 	authenticatedEmail: string | null;
 	authError: string | null;
-	isStartingLogin: boolean;
+	isLoggingIn: boolean;
 	isSigningOut: boolean;
-	oauthProviderLabel: string;
+	inputClassName: string;
 	actionButtonClassName: string;
-	handleStartLogin: () => Promise<void>;
+	handlePasswordLogin: (password: string) => Promise<void>;
 	handleSignOut: () => Promise<void>;
 }
 
@@ -37,13 +38,24 @@ export function AccountDialog({
 	accessToken,
 	authenticatedEmail,
 	authError,
-	isStartingLogin,
+	isLoggingIn,
 	isSigningOut,
-	oauthProviderLabel,
+	inputClassName,
 	actionButtonClassName,
-	handleStartLogin,
+	handlePasswordLogin,
 	handleSignOut,
 }: AccountDialogProps) {
+	const [password, setPassword] = useState('');
+
+	const handleSubmitLogin = useCallback(
+		async (event: FormEvent<HTMLFormElement>) => {
+			event.preventDefault();
+			await handlePasswordLogin(password);
+			setPassword('');
+		},
+		[handlePasswordLogin, password]
+	);
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -60,7 +72,7 @@ export function AccountDialog({
 						konto
 					</DialogTitle>
 					<DialogDescription className='text-xs text-stone-400'>
-						supabase oauth login für admin-zugriff
+						passwort-login für admin-zugriff
 					</DialogDescription>
 				</DialogHeader>
 
@@ -68,19 +80,28 @@ export function AccountDialog({
 					{isAuthBusy && <p>anmeldung wird geprüft ...</p>}
 
 					{!accessToken && !isAuthBusy && (
-						<div className='space-y-3'>
+						<form
+							onSubmit={handleSubmitLogin}
+							className='space-y-3'>
 							<p>nicht eingeloggt.</p>
+							<input
+								type='password'
+								value={password}
+								onChange={(event) =>
+									setPassword(event.target.value)
+								}
+								placeholder='passwort'
+								autoComplete='current-password'
+								className={inputClassName}
+							/>
 							<button
-								type='button'
-								onClick={handleStartLogin}
-								disabled={isStartingLogin}
+								type='submit'
+								disabled={isLoggingIn}
 								className={actionButtonClassName}>
 								<LogInIcon className='h-3.5 w-3.5' />
-								{isStartingLogin
-									? 'oauth startet ...'
-									: `mit ${oauthProviderLabel} anmelden`}
+								{isLoggingIn ? 'login ...' : 'anmelden'}
 							</button>
-						</div>
+						</form>
 					)}
 
 					{accessToken && !isAuthBusy && (

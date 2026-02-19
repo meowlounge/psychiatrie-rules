@@ -1,9 +1,4 @@
-import {
-	defaultOauthProvider,
-	oauthProviderLabelMap,
-	type AdminStatusResponse,
-	type SupportedOauthProvider,
-} from '@/components/rules-ui/rules-page/types';
+import type { AdminStatusResponse } from '@/components/rules-ui/rules-page/types';
 
 export function formatSyncTime(timestamp: string | null) {
 	if (!timestamp) {
@@ -49,24 +44,42 @@ export function getActionButtonClassName() {
 	].join(' ');
 }
 
-export function resolveOauthProvider(): SupportedOauthProvider {
-	const configuredProvider = process.env.NEXT_PUBLIC_SUPABASE_OAUTH_PROVIDER;
+function isValidEmail(value: string) {
+	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
 
-	if (!configuredProvider) {
-		return defaultOauthProvider;
+function extractSupabaseProjectRef() {
+	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+	if (!supabaseUrl) {
+		return null;
 	}
 
-	const normalizedProvider = configuredProvider.trim().toLowerCase();
-	const isSupportedProvider = Object.hasOwn(
-		oauthProviderLabelMap,
-		normalizedProvider
-	);
+	try {
+		const url = new URL(supabaseUrl);
+		const projectRef = url.hostname.split('.')[0];
 
-	if (!isSupportedProvider) {
-		return defaultOauthProvider;
+		return projectRef ?? null;
+	} catch {
+		return null;
+	}
+}
+
+export function resolvePasswordLoginEmail() {
+	const configuredEmail = process.env.NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL;
+
+	if (configuredEmail) {
+		const normalizedEmail = configuredEmail.trim().toLowerCase();
+
+		if (isValidEmail(normalizedEmail)) {
+			return normalizedEmail;
+		}
 	}
 
-	return normalizedProvider as SupportedOauthProvider;
+	const generatedLocalPart =
+		extractSupabaseProjectRef() ?? 'psychiatrie-rules-admin';
+
+	return `${generatedLocalPart}@auth.local`;
 }
 
 export function parseAdminStatusResponse(responseBody: unknown) {

@@ -25,10 +25,9 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 		canCreateRules,
 		isAuthBusy,
 		authError,
-		isStartingLogin,
+		isLoggingIn,
 		isSigningOut,
-		oauthProviderLabel,
-		handleStartLogin,
+		handlePasswordLogin,
 		handleSignOut,
 	} = useAdminAuth();
 	const {
@@ -83,11 +82,11 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 							accessToken={accessToken}
 							authenticatedEmail={authenticatedEmail}
 							authError={authError}
-							isStartingLogin={isStartingLogin}
+							isLoggingIn={isLoggingIn}
 							isSigningOut={isSigningOut}
-							oauthProviderLabel={oauthProviderLabel}
+							inputClassName={inputClassName}
 							actionButtonClassName={actionButtonClassName}
-							handleStartLogin={handleStartLogin}
+							handlePasswordLogin={handlePasswordLogin}
 							handleSignOut={handleSignOut}
 						/>
 					</div>

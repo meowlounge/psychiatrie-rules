@@ -2,11 +2,11 @@
 
 import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
 
-import type { Provider, Session } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { oauthProviderLabelMap, type UseAdminAuthResult } from './types';
-import { parseAdminStatusResponse, resolveOauthProvider } from './utils';
+import type { UseAdminAuthResult } from './types';
+import { parseAdminStatusResponse, resolvePasswordLoginEmail } from './utils';
 
 async function fetchAdminStatus(token: string) {
 	const response = await fetch('/api/auth/admin-status', {
@@ -30,7 +30,7 @@ export function useAdminAuth(): UseAdminAuthResult {
 	const supabaseRef = useRef(getSupabaseBrowserClient());
 	const isMountedRef = useRef(true);
 	const adminStatusRequestRef = useRef(0);
-	const oauthProviderRef = useRef(resolveOauthProvider());
+	const loginEmailRef = useRef(resolvePasswordLoginEmail());
 	const [accessToken, setAccessToken] = useState<string | null>(null);
 	const [authenticatedEmail, setAuthenticatedEmail] = useState<string | null>(
 		null
@@ -39,14 +39,8 @@ export function useAdminAuth(): UseAdminAuthResult {
 	const [isAuthLoading, setIsAuthLoading] = useState(true);
 	const [isResolvingAdmin, setIsResolvingAdmin] = useState(false);
 	const [authError, setAuthError] = useState<string | null>(null);
-	const [isStartingLogin, setIsStartingLogin] = useState(false);
+	const [isLoggingIn, setIsLoggingIn] = useState(false);
 	const [isSigningOut, setIsSigningOut] = useState(false);
-
-	const oauthProviderLabel = useMemo(() => {
-		const provider = oauthProviderRef.current;
-
-		return oauthProviderLabelMap[provider];
-	}, []);
 
 	const canCreateRules = useMemo(
 		() => Boolean(accessToken) && isAdmin,
@@ -144,26 +138,30 @@ export function useAdminAuth(): UseAdminAuthResult {
 		[resolveAdminStatus]
 	);
 
-	const handleStartLogin = useCallback(async () => {
+	const handlePasswordLogin = useCallback(async (password: string) => {
+		if (password.length === 0) {
+			setAuthError('bitte passwort eingeben.');
+			return;
+		}
+
 		setAuthError(null);
-		setIsStartingLogin(true);
+		setIsLoggingIn(true);
 
 		try {
-			const provider = oauthProviderRef.current as Provider;
-			const { error } = await supabaseRef.current.auth.signInWithOAuth({
-				provider,
-				options: {
-					redirectTo: window.location.origin,
-				},
-			});
+			const { error } = await supabaseRef.current.auth.signInWithPassword(
+				{
+					email: loginEmailRef.current,
+					password,
+				}
+			);
 
 			if (error) {
 				setAuthError(error.message);
 			}
 		} catch {
-			setAuthError('oauth-login konnte nicht gestartet werden.');
+			setAuthError('passwort-login konnte nicht gestartet werden.');
 		} finally {
-			setIsStartingLogin(false);
+			setIsLoggingIn(false);
 		}
 	}, []);
 
@@ -210,10 +208,9 @@ export function useAdminAuth(): UseAdminAuthResult {
 		canCreateRules,
 		isAuthBusy,
 		authError,
-		isStartingLogin,
+		isLoggingIn,
 		isSigningOut,
-		oauthProviderLabel,
-		handleStartLogin,
+		handlePasswordLogin,
 		handleSignOut,
 	};
 }

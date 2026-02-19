@@ -5,14 +5,14 @@ Live-Updates via Supabase Realtime und stündlichem Keepalive.
 
 Der Discord-Bot ist extern.
 Diese Website liest Regeln live und erlaubt Rule-Creation nur
-für einen explizit freigegebenen OAuth-Admin-Account.
+für einen explizit freigegebenen Admin-Account.
 
 ## Features
 
 - Dynamische Regeln aus Supabase (`public.rules`)
 - Rule-Props: `is_new`, `is_limited_time`, Zeitfenster, Priorität
 - Live-Updates ohne Reload über Supabase Realtime
-- OAuth-Login via Supabase (Dialog oben rechts)
+- Passwort-Login via Supabase (Dialog oben rechts)
 - Sichere Server-Prüfung für Admin-Aktionen (`RULES_ADMIN_EMAIL`)
 - Stündlicher Supabase-Keepalive (`/api/cron/supabase-keepalive`)
 
@@ -41,7 +41,7 @@ NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SECRET_KEY=...
 RULES_ADMIN_EMAIL=dein-admin@beispiel.de
-NEXT_PUBLIC_SUPABASE_OAUTH_PROVIDER=github # optional: github|discord|google
+NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL=dein-admin@beispiel.de # optional
 CRON_SECRET=... # optional, empfohlen für Keepalive-Route
 ```
 
@@ -68,13 +68,19 @@ In Supabase unter Database -> Replication:
 
 Wenn du nicht auf Vercel bist, rufe den Endpoint stündlich extern auf.
 
-## OAuth Admin-Flow
+## Passwort Admin-Flow
 
 1. User öffnet den Account-Dialog (User-Icon oben rechts).
-2. Login startet `supabase.auth.signInWithOAuth(...)`.
+2. Login startet `supabase.auth.signInWithPassword(...)`.
 3. Nach Login wird der Access Token gegen Supabase verifiziert.
 4. Nur wenn `user.email === RULES_ADMIN_EMAIL`:
    Rule-Form sichtbar und `POST /api/rules` erlaubt.
+
+Hinweis:
+
+- Wenn `NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL` fehlt, wird lokal eine
+  Login-E-Mail generiert (`<project-ref>@auth.local`).
+- Diese Login-E-Mail muss mit `RULES_ADMIN_EMAIL` übereinstimmen.
 
 ## Scripts
 
