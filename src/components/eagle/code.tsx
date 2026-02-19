@@ -14,13 +14,10 @@ type CodeProps = React.HTMLAttributes<HTMLElement>;
  * @author prodbyeagle
  */
 export function Code({ className, ...props }: CodeProps): JSX.Element {
-  return (
-    <code
-      className={cn(
-        'font-mono text-sm px-0.5',
-        className
-      )}
-      {...props}
-    />
-  );
+	return (
+		<code
+			className={cn('font-mono text-sm px-0.5', className)}
+			{...props}
+		/>
+	);
 }

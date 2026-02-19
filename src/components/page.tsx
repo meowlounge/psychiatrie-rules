@@ -1,27 +1,29 @@
-import { RulesPageClient } from '@/components/rules-ui/rules-page-client';
+'use client';
 
-import { verifyRulesAdminToken } from '@/lib/admin-access';
-import { fetchActiveRules } from '@/lib/rules';
+import { ProgressIndicator } from '@/components/rules-ui/progress-indicator';
+import { RuleCard } from '@/components/rules-ui/rule-card';
+import { SignatureSection } from '@/components/rules-ui/signature';
+import { rules } from '@/rules';
+import { Shield } from 'lucide-react';
+import { useRef, useState } from 'react';
 
-export const dynamic = 'force-dynamic';
+const STORAGE_KEY = 'psychiatrie_state';
 
-interface HomePageProps {
-	searchParams?:
-		| Record<string, string | string[] | undefined>
-		| Promise<Record<string, string | string[] | undefined>>;
+interface StoredState {
+  signed: boolean;
+  name: string;
+  checkedRules: number[];
 }
 
-interface RulesPageData {
-	rules: Awaited<ReturnType<typeof fetchActiveRules>>;
-	loadError?: string;
+interface LocalState {
+  signed: boolean;
+  name: string;
+  checkedRules: Set<number>;
 }
 
-function getSingleSearchParam(value: string | string[] | undefined) {
-	if (!value) {
-		return null;
-	}
+export default function HomePage() {
+  const hydrated = useRef(false);
 
-<<<<<<< HEAD
   // deterministic SSR initial state
   const [state, setState] = useState<LocalState>({
     signed: false,
@@ -138,45 +140,4 @@ function getSingleSearchParam(value: string | string[] | undefined) {
       </div>
     </main>
   );
-=======
-	return Array.isArray(value) ? (value[0] ?? null) : value;
-}
-
-export default async function HomePage({ searchParams }: HomePageProps) {
-	const resolvedSearchParams = searchParams
-		? await Promise.resolve(searchParams)
-		: {};
-	const adminToken = getSingleSearchParam(resolvedSearchParams.admin);
-	const verifiedToken = adminToken
-		? verifyRulesAdminToken(adminToken)
-		: { isValid: false };
-	const canCreateRules = Boolean(
-		adminToken &&
-		verifiedToken.isValid &&
-		verifiedToken.payload?.scope === 'rules:create'
-	);
-	const adminAccessError =
-		adminToken && !canCreateRules
-			? 'admin-link ist ungültig oder abgelaufen.'
-			: undefined;
-
-	const rulesPageData = await fetchActiveRules()
-		.then((rules): RulesPageData => ({ rules }))
-		.catch(
-			(): RulesPageData => ({
-				rules: [],
-				loadError: 'regeln sind gerade nicht erreichbar.',
-			})
-		);
-
-	return (
-		<RulesPageClient
-			rules={rulesPageData.rules}
-			loadError={rulesPageData.loadError}
-			adminToken={canCreateRules ? (adminToken ?? undefined) : undefined}
-			canCreateRules={canCreateRules}
-			adminAccessError={adminAccessError}
-		/>
-	);
->>>>>>> a5888a487315b917f3f2aa10a037e35f646b720b
 }
