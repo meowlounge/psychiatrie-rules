@@ -146,6 +146,11 @@ export function useCreateRuleForm({
 		[accessToken, formState, isAdmin, refreshRules]
 	);
 
+	const resetCreateRuleFeedback = useCallback(() => {
+		setCreateRuleError(null);
+		setCreateRuleSuccess(null);
+	}, []);
+
 	return {
 		formState,
 		isSubmittingRule,
@@ -159,5 +164,6 @@ export function useCreateRuleForm({
 		handleLimitedStartAtChange,
 		handleLimitedEndAtChange,
 		handleCreateRule,
+		resetCreateRuleFeedback,
 	};
 }

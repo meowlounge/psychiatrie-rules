@@ -2,7 +2,7 @@
 
 import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
 
-import type { Session } from '@supabase/supabase-js';
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { UseAdminAuthResult } from './types';
@@ -30,6 +30,7 @@ export function useAdminAuth(): UseAdminAuthResult {
 	const supabaseRef = useRef(getSupabaseBrowserClient());
 	const isMountedRef = useRef(true);
 	const adminStatusRequestRef = useRef(0);
+	const resolvedIdentityRef = useRef<string | null>(null);
 	const loginEmailRef = useRef(resolvePasswordLoginEmail());
 	const [accessToken, setAccessToken] = useState<string | null>(null);
 	const [authenticatedEmail, setAuthenticatedEmail] = useState<string | null>(
@@ -120,19 +121,36 @@ export function useAdminAuth(): UseAdminAuthResult {
 	}, []);
 
 	const syncSessionState = useCallback(
-		async (session: Session | null) => {
+		async (
+			event: AuthChangeEvent | 'INITIAL_FETCH',
+			session: Session | null
+		) => {
 			if (!session) {
 				setAccessToken(null);
 				setAuthenticatedEmail(null);
 				setIsAdmin(false);
 				setAuthError(null);
+				resolvedIdentityRef.current = null;
 				setIsAuthLoading(false);
 				return;
 			}
 
 			setAccessToken(session.access_token);
 			setAuthenticatedEmail(session.user.email ?? null);
+
+			const identityKey = `${session.user.id}:${session.user.email ?? ''}`;
+			const hasResolvedIdentity =
+				resolvedIdentityRef.current === identityKey;
+			const shouldSkipAdminStatusRefresh =
+				hasResolvedIdentity && event !== 'USER_UPDATED';
+
+			if (shouldSkipAdminStatusRefresh) {
+				setIsAuthLoading(false);
+				return;
+			}
+
 			await resolveAdminStatus(session.access_token);
+			resolvedIdentityRef.current = identityKey;
 			setIsAuthLoading(false);
 		},
 		[resolveAdminStatus]
@@ -187,12 +205,14 @@ export function useAdminAuth(): UseAdminAuthResult {
 
 		void supabase.auth
 			.getSession()
-			.then(({ data }) => syncSessionState(data.session));
+			.then(({ data }) =>
+				syncSessionState('INITIAL_FETCH', data.session)
+			);
 
 		const {
 			data: { subscription },
-		} = supabase.auth.onAuthStateChange((_event, nextSession) => {
-			void syncSessionState(nextSession);
+		} = supabase.auth.onAuthStateChange((event, nextSession) => {
+			void syncSessionState(event, nextSession);
 		});
 
 		return () => {

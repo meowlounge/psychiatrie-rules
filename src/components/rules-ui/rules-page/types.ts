@@ -58,6 +58,7 @@ export interface UseCreateRuleFormResult {
 	handleLimitedStartAtChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	handleLimitedEndAtChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	handleCreateRule: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+	resetCreateRuleFeedback: () => void;
 }
 
 export function createInitialFormState(): RuleCreateFormState {
@@ -69,6 +70,20 @@ export function createInitialFormState(): RuleCreateFormState {
 		limitedStartAt: '',
 		limitedEndAt: '',
 		priority: '100',
+	};
+}
+
+export function createFormStateFromRule(
+	rule: RuleViewModel
+): RuleCreateFormState {
+	return {
+		content: rule.content,
+		note: rule.note ?? '',
+		isNew: rule.isNew,
+		isLimitedTime: rule.isLimitedTime,
+		limitedStartAt: toDateTimeLocalValue(rule.limitedStartAt),
+		limitedEndAt: toDateTimeLocalValue(rule.limitedEndAt),
+		priority: String(rule.priority),
 	};
 }
 
@@ -105,4 +120,21 @@ function toIsoTimestamp(value: string) {
 	}
 
 	return timestamp.toISOString();
+}
+
+function toDateTimeLocalValue(value: string | undefined) {
+	if (!value) {
+		return '';
+	}
+
+	const parsedDate = new Date(value);
+
+	if (Number.isNaN(parsedDate.getTime())) {
+		return '';
+	}
+
+	const timezoneOffset = parsedDate.getTimezoneOffset() * 60 * 1000;
+	const localDate = new Date(parsedDate.getTime() - timezoneOffset);
+
+	return localDate.toISOString().slice(0, 16);
 }

@@ -3,6 +3,8 @@
 import { RuleCard } from '@/components/rules-ui/rule-card';
 import { AccountDialog } from '@/components/rules-ui/rules-page/account-dialog';
 import { CreateRuleSection } from '@/components/rules-ui/rules-page/create-rule-section';
+import { DeleteRuleDialog } from '@/components/rules-ui/rules-page/delete-rule-dialog';
+import { EditRuleDialog } from '@/components/rules-ui/rules-page/edit-rule-dialog';
 import type { RulesPageClientProps } from '@/components/rules-ui/rules-page/types';
 import { useAdminAuth } from '@/components/rules-ui/rules-page/use-admin-auth';
 import { useCreateRuleForm } from '@/components/rules-ui/rules-page/use-create-rule-form';
@@ -13,7 +15,9 @@ import {
 	getInputClassName,
 } from '@/components/rules-ui/rules-page/utils';
 
-import { useMemo } from 'react';
+import type { RuleViewModel } from '@/types/rules';
+
+import { useCallback, useMemo, useState } from 'react';
 
 export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 	const { liveRules, syncError, lastSyncedAt, isSyncing, refreshRules } =
@@ -43,14 +47,25 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 		handleLimitedStartAtChange,
 		handleLimitedEndAtChange,
 		handleCreateRule,
+		resetCreateRuleFeedback,
 	} = useCreateRuleForm({
 		accessToken,
 		isAdmin,
 		refreshRules,
 	});
+	const [ruleToEdit, setRuleToEdit] = useState<RuleViewModel | null>(null);
+	const [ruleToDelete, setRuleToDelete] = useState<RuleViewModel | null>(
+		null
+	);
 
 	const inputClassName = useMemo(() => getInputClassName(), []);
 	const actionButtonClassName = useMemo(() => getActionButtonClassName(), []);
+	const handleEditRule = useCallback((rule: RuleViewModel) => {
+		setRuleToEdit(rule);
+	}, []);
+	const handleDeleteRule = useCallback((rule: RuleViewModel) => {
+		setRuleToDelete(rule);
+	}, []);
 
 	return (
 		<main className='min-h-screen'>
@@ -76,39 +91,49 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 								aktualisiert: {formatSyncTime(lastSyncedAt)}
 							</p>
 						</div>
-						<AccountDialog
-							canCreateRules={canCreateRules}
-							isAuthBusy={isAuthBusy}
-							accessToken={accessToken}
-							authenticatedEmail={authenticatedEmail}
-							authError={authError}
-							isLoggingIn={isLoggingIn}
-							isSigningOut={isSigningOut}
-							inputClassName={inputClassName}
-							actionButtonClassName={actionButtonClassName}
-							handlePasswordLogin={handlePasswordLogin}
-							handleSignOut={handleSignOut}
-						/>
+						<div className='flex items-center gap-2'>
+							<CreateRuleSection
+								canCreateRules={canCreateRules}
+								formState={formState}
+								isSubmittingRule={isSubmittingRule}
+								createRuleError={createRuleError}
+								createRuleSuccess={createRuleSuccess}
+								inputClassName={inputClassName}
+								actionButtonClassName={actionButtonClassName}
+								handleContentChange={handleContentChange}
+								handleNoteChange={handleNoteChange}
+								handlePriorityChange={handlePriorityChange}
+								handleIsNewChange={handleIsNewChange}
+								handleIsLimitedTimeChange={
+									handleIsLimitedTimeChange
+								}
+								handleLimitedStartAtChange={
+									handleLimitedStartAtChange
+								}
+								handleLimitedEndAtChange={
+									handleLimitedEndAtChange
+								}
+								handleCreateRule={handleCreateRule}
+								resetCreateRuleFeedback={
+									resetCreateRuleFeedback
+								}
+							/>
+							<AccountDialog
+								canCreateRules={canCreateRules}
+								isAuthBusy={isAuthBusy}
+								accessToken={accessToken}
+								authenticatedEmail={authenticatedEmail}
+								authError={authError}
+								isLoggingIn={isLoggingIn}
+								isSigningOut={isSigningOut}
+								inputClassName={inputClassName}
+								actionButtonClassName={actionButtonClassName}
+								handlePasswordLogin={handlePasswordLogin}
+								handleSignOut={handleSignOut}
+							/>
+						</div>
 					</div>
 				</header>
-
-				<CreateRuleSection
-					canCreateRules={canCreateRules}
-					formState={formState}
-					isSubmittingRule={isSubmittingRule}
-					createRuleError={createRuleError}
-					createRuleSuccess={createRuleSuccess}
-					inputClassName={inputClassName}
-					actionButtonClassName={actionButtonClassName}
-					handleContentChange={handleContentChange}
-					handleNoteChange={handleNoteChange}
-					handlePriorityChange={handlePriorityChange}
-					handleIsNewChange={handleIsNewChange}
-					handleIsLimitedTimeChange={handleIsLimitedTimeChange}
-					handleLimitedStartAtChange={handleLimitedStartAtChange}
-					handleLimitedEndAtChange={handleLimitedEndAtChange}
-					handleCreateRule={handleCreateRule}
-				/>
 
 				{loadError && (
 					<p className='text-xs text-muted-foreground sm:text-sm'>
@@ -132,11 +157,45 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 							isSyncing ? 'blur-[1.5px] opacity-90' : ''
 						}`}>
 						{liveRules.map((rule, index) => (
-							<RuleCard key={rule.id} rule={rule} index={index} />
+							<RuleCard
+								key={rule.id}
+								rule={rule}
+								index={index}
+								canManageRule={canCreateRules}
+								handleEditRule={handleEditRule}
+								handleDeleteRule={handleDeleteRule}
+							/>
 						))}
 					</section>
 				)}
 			</div>
+			<EditRuleDialog
+				rule={ruleToEdit}
+				isOpen={Boolean(ruleToEdit)}
+				onOpenChange={(isOpen) => {
+					if (!isOpen) {
+						setRuleToEdit(null);
+					}
+				}}
+				accessToken={accessToken}
+				isAdmin={isAdmin}
+				inputClassName={inputClassName}
+				actionButtonClassName={actionButtonClassName}
+				refreshRules={refreshRules}
+			/>
+			<DeleteRuleDialog
+				rule={ruleToDelete}
+				isOpen={Boolean(ruleToDelete)}
+				onOpenChange={(isOpen) => {
+					if (!isOpen) {
+						setRuleToDelete(null);
+					}
+				}}
+				accessToken={accessToken}
+				isAdmin={isAdmin}
+				actionButtonClassName={actionButtonClassName}
+				refreshRules={refreshRules}
+			/>
 		</main>
 	);
 }
