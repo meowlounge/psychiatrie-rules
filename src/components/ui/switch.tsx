@@ -2,11 +2,13 @@
 
 import { cn } from '@/lib/utils';
 
-import * as React from 'react';
-
-interface SwitchProps extends Omit<React.ComponentProps<'button'>, 'onChange'> {
+interface SwitchProps {
 	checked: boolean;
-	onCheckedChange?: (isChecked: boolean) => void;
+	onCheckedChange: (isChecked: boolean) => void;
+	disabled?: boolean;
+	className?: string;
+	id?: string;
+	'aria-label'?: string;
 }
 
 function Switch({
@@ -14,16 +16,16 @@ function Switch({
 	onCheckedChange,
 	className,
 	disabled,
-	type,
-	onClick,
-	...props
+	id,
+	'aria-label': ariaLabel,
 }: SwitchProps) {
 	return (
 		<button
-			type={type ?? 'button'}
+			type='button'
+			id={id}
 			role='switch'
 			aria-checked={checked}
-			data-slot='switch'
+			aria-label={ariaLabel}
 			data-state={checked ? 'checked' : 'unchecked'}
 			disabled={disabled}
 			className={cn(
@@ -34,18 +36,14 @@ function Switch({
 				'focus-visible:border-stone-500',
 				className
 			)}
-			onClick={(event) => {
-				onClick?.(event);
-
-				if (event.defaultPrevented || disabled) {
+			onClick={() => {
+				if (disabled) {
 					return;
 				}
 
-				onCheckedChange?.(!checked);
-			}}
-			{...props}>
+				onCheckedChange(!checked);
+			}}>
 			<span
-				data-slot='switch-thumb'
 				data-state={checked ? 'checked' : 'unchecked'}
 				className={cn(
 					'h-4 w-4 bg-stone-300 transition-transform',
