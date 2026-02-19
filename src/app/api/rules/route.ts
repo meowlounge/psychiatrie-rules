@@ -1,7 +1,5 @@
-import {
-	getBearerTokenFromRequest,
-	verifyRulesAdminToken,
-} from '@/lib/admin-access';
+import { getBearerTokenFromRequest } from '@/lib/admin-access';
+import { getAdminAuthStatusFromAccessToken } from '@/lib/admin-auth';
 import { createRule } from '@/lib/rules';
 
 import { NextResponse } from 'next/server';
@@ -9,16 +7,31 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
-	const adminToken = getBearerTokenFromRequest(request);
+	const accessToken = getBearerTokenFromRequest(request);
 
-	if (!adminToken) {
+	if (!accessToken) {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 	}
 
-	const verifiedToken = verifyRulesAdminToken(adminToken);
+	let adminAuthStatus: Awaited<
+		ReturnType<typeof getAdminAuthStatusFromAccessToken>
+	>;
 
-	if (!verifiedToken.isValid || !verifiedToken.payload) {
+	try {
+		adminAuthStatus = await getAdminAuthStatusFromAccessToken(accessToken);
+	} catch (error) {
+		const message =
+			error instanceof Error ? error.message : 'Could not verify user.';
+
+		return NextResponse.json({ error: message }, { status: 500 });
+	}
+
+	if (!adminAuthStatus.isAuthenticated) {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
+	if (!adminAuthStatus.isAdmin) {
+		return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 	}
 
 	const payload = await request.json().catch(() => null);
@@ -31,7 +44,8 @@ export async function POST(request: Request) {
 	}
 
 	try {
-		const rule = await createRule(payload, verifiedToken.payload.sub);
+		const createdBy = adminAuthStatus.email ?? adminAuthStatus.userId;
+		const rule = await createRule(payload, createdBy);
 
 		return NextResponse.json(
 			{ rule },
