@@ -1,5 +1,5 @@
-import { getBearerTokenFromRequest } from '@/lib/admin-access';
 import { getAdminAuthStatusFromAccessToken } from '@/lib/admin-auth';
+import { getBearerTokenFromRequest } from '@/lib/http-auth';
 
 import { NextResponse } from 'next/server';
 
