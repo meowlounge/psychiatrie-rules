@@ -29,6 +29,10 @@ export function getInputClassName() {
 
 export function getActionButtonClassName() {
 	return [
+		'inline-flex',
+		'items-center',
+		'justify-center',
+		'gap-2',
 		'px-2',
 		'py-1',
 		'text-xs',
