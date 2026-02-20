@@ -207,7 +207,7 @@ export function EditRuleDialog({
 						handleLimitedEndAtChange={handleLimitedEndAtChange}
 					/>
 
-					<div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
+					<div className='flex flex-col-reverse gap-2 border-t border-neutral-800/70 pt-3 sm:flex-row sm:justify-end'>
 						<DialogClose asChild>
 							<Button
 								type='button'

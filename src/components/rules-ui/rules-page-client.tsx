@@ -70,8 +70,8 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 
 	return (
 		<main className='min-h-screen pb-6'>
-			<div className='space-y-8 sm:space-y-10'>
-				<header className='space-y-2'>
+			<div className='border border-neutral-800/70'>
+				<header className='border-b border-neutral-800/70 px-4 py-4 sm:px-5 sm:py-5'>
 					<div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
 						<div className='space-y-2'>
 							<div className='flex items-center gap-3'>
@@ -138,7 +138,7 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 
 				{hasPageNotice && (
 					<section
-						className='space-y-2'
+						className='space-y-2 border-b border-neutral-800/70 px-4 py-3 sm:px-5 sm:py-4'
 						role='status'
 						aria-live='polite'>
 						{loadError && (
@@ -154,27 +154,29 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 					</section>
 				)}
 
-				{liveRules.length === 0 ? (
-					<p className='border border-neutral-800 px-3 py-3 text-sm text-muted-foreground sm:text-base'>
-						keine regeln verfügbar.
-					</p>
-				) : (
-					<section
-						className={`space-y-5 transition-all duration-150 sm:space-y-6 ${
-							isSyncing ? 'opacity-90' : ''
-						}`}>
-						{liveRules.map((rule, index) => (
-							<RuleCard
-								key={rule.id}
-								rule={rule}
-								index={index}
-								canManageRule={canCreateRules}
-								handleEditRule={handleEditRule}
-								handleDeleteRule={handleDeleteRule}
-							/>
-						))}
-					</section>
-				)}
+				<section
+					className={`px-4 py-4 transition-all duration-150 sm:px-5 sm:py-5 ${
+						isSyncing ? 'opacity-90' : ''
+					}`}>
+					{liveRules.length === 0 ? (
+						<p className='text-sm text-muted-foreground sm:text-base'>
+							keine regeln verfügbar.
+						</p>
+					) : (
+						<div className='space-y-5 sm:space-y-6'>
+							{liveRules.map((rule, index) => (
+								<RuleCard
+									key={rule.id}
+									rule={rule}
+									index={index}
+									canManageRule={canCreateRules}
+									handleEditRule={handleEditRule}
+									handleDeleteRule={handleDeleteRule}
+								/>
+							))}
+						</div>
+					)}
+				</section>
 			</div>
 			<EditRuleDialog
 				rule={ruleToEdit}

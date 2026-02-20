@@ -1,28 +1,21 @@
 'use client';
 
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 
 import type { RuleViewModel } from '@/types/rules';
 
 import { AlertTriangleIcon } from 'lucide-react';
-import {
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-	type MouseEvent,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 interface DeleteRuleDialogProps {
 	rule: RuleViewModel | null;
@@ -111,27 +104,19 @@ export function DeleteRuleDialog({
 		}
 	}, [accessToken, isAdmin, isConfirmed, onOpenChange, refreshRules, rule]);
 
-	const handleActionClick = useCallback(
-		(event: MouseEvent<HTMLButtonElement>) => {
-			event.preventDefault();
-			void handleDeleteRule();
-		},
-		[handleDeleteRule]
-	);
-
 	return (
-		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
-				<AlertDialogHeader>
-					<AlertDialogTitle className='flex items-center gap-2 text-base uppercase tracking-[0.08em]'>
+		<Dialog open={isOpen} onOpenChange={onOpenChange}>
+			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
+				<DialogHeader>
+					<DialogTitle className='flex items-center gap-2 text-base uppercase tracking-[0.08em]'>
 						<AlertTriangleIcon className='h-4 w-4 text-neutral-300' />
 						regel löschen
-					</AlertDialogTitle>
-					<AlertDialogDescription className='text-sm text-neutral-400'>
+					</DialogTitle>
+					<DialogDescription className='text-sm text-neutral-400'>
 						die regel wird deaktiviert und live aus der liste
 						entfernt
-					</AlertDialogDescription>
-				</AlertDialogHeader>
+					</DialogDescription>
+				</DialogHeader>
 				<p className='text-xs text-neutral-500'>
 					diese aktion kann nicht rückgängig gemacht werden.
 				</p>
@@ -166,27 +151,25 @@ export function DeleteRuleDialog({
 					</div>
 				</div>
 
-				<AlertDialogFooter>
-					<AlertDialogCancel asChild>
+				<DialogFooter className='border-t border-neutral-800/70 pt-3'>
+					<DialogClose asChild>
 						<Button type='button' className={actionButtonClassName}>
 							abbrechen
 						</Button>
-					</AlertDialogCancel>
-					<AlertDialogAction asChild>
-						<Button
-							type='button'
-							onClick={handleActionClick}
-							disabled={isDeleting || !isConfirmed}
-							className={actionButtonClassName}>
-							{isDeleting ? 'wird gelöscht ...' : 'regel löschen'}
-						</Button>
-					</AlertDialogAction>
-				</AlertDialogFooter>
+					</DialogClose>
+					<Button
+						type='button'
+						onClick={() => void handleDeleteRule()}
+						disabled={isDeleting || !isConfirmed}
+						className={actionButtonClassName}>
+						{isDeleting ? 'wird gelöscht ...' : 'regel löschen'}
+					</Button>
+				</DialogFooter>
 
 				{error && (
 					<p className='text-sm text-neutral-300'>fehler: {error}</p>
 				)}
-			</AlertDialogContent>
-		</AlertDialog>
+			</DialogContent>
+		</Dialog>
 	);
 }
