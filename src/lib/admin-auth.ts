@@ -5,7 +5,7 @@ import { getSupabaseServerClient } from '@/lib/supabase';
 import { z } from 'zod';
 
 const adminEnvSchema = z.object({
-	RULES_ADMIN_EMAIL: z.string().trim().email(),
+	RULES_ADMIN_EMAIL: z.email(),
 });
 
 export interface AdminAuthStatus {
