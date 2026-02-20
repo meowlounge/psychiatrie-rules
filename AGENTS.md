@@ -244,7 +244,8 @@
 
 ## GITHUB
 
-- Always commit the made changes
+- Always use bun instead of npm, pnpm and other package managers
+- Always commit the made changes and push
 - Always use Conventional Commits Naming Schema
 - Always create an new branch so that the main branch stays safe
 - Always run formatting before committing
