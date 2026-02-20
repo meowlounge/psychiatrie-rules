@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogContent,
@@ -8,6 +9,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 import {
 	LogInIcon,
@@ -60,12 +63,12 @@ export function AccountDialog({
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<button
+				<Button
 					type='button'
-					className='flex h-10 w-10 items-center justify-center border border-neutral-700 bg-neutral-900 text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-500/60'
+					className='flex h-10 w-10 items-center justify-center'
 					aria-label='konto öffnen'>
 					<UserRoundIcon className='h-4 w-4' />
-				</button>
+				</Button>
 			</DialogTrigger>
 			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
 				<DialogHeader>
@@ -82,7 +85,7 @@ export function AccountDialog({
 						<p
 							role='status'
 							aria-live='polite'
-							className='border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-300'>
+							className='border border-neutral-800 px-3 py-2 text-neutral-300'>
 							anmeldung wird geprüft ...
 						</p>
 					)}
@@ -99,12 +102,8 @@ export function AccountDialog({
 									melde dich mit dem admin-passwort an
 								</p>
 							</div>
-							<label
-								htmlFor='admin-password'
-								className='text-xs uppercase tracking-[0.08em] text-neutral-400'>
-								passwort
-							</label>
-							<input
+							<Label htmlFor='admin-password'>passwort</Label>
+							<Input
 								id='admin-password'
 								type='password'
 								value={password}
@@ -116,19 +115,19 @@ export function AccountDialog({
 								autoFocus
 								className={inputClassName}
 							/>
-							<button
+							<Button
 								type='submit'
 								disabled={isLoginDisabled}
 								className={actionButtonClassName}>
 								<LogInIcon className='h-4 w-4' />
 								{isLoggingIn ? 'login ...' : 'anmelden'}
-							</button>
+							</Button>
 						</form>
 					)}
 
 					{accessToken && !isAuthBusy && (
 						<div className='space-y-3'>
-							<div className='space-y-2 border border-neutral-800 bg-neutral-950 p-3'>
+							<div className='space-y-2 border border-neutral-800 p-3'>
 								<p className='text-xs uppercase tracking-[0.08em] text-neutral-500'>
 									angemeldet als
 								</p>
@@ -146,19 +145,19 @@ export function AccountDialog({
 										: 'kein admin-zugriff'}
 								</p>
 							</div>
-							<button
+							<Button
 								type='button'
 								onClick={handleSignOut}
 								disabled={isSigningOut}
 								className={actionButtonClassName}>
 								<LogOutIcon className='h-4 w-4' />
 								{isSigningOut ? 'logout ...' : 'abmelden'}
-							</button>
+							</Button>
 						</div>
 					)}
 
 					{authError && (
-						<p className='border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-300'>
+						<p className='border border-neutral-700 px-3 py-2 text-sm text-neutral-300'>
 							{authError}
 						</p>
 					)}

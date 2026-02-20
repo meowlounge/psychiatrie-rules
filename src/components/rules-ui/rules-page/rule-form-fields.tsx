@@ -4,8 +4,10 @@ import type {
 	RuleCreateFormState,
 	UseCreateRuleFormResult,
 } from '@/components/rules-ui/rules-page/types';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 
 interface RuleFormFieldsProps {
 	idPrefix: string;
@@ -41,12 +43,8 @@ export function RuleFormFields({
 	return (
 		<div className='space-y-4'>
 			<div className='space-y-1.5'>
-				<Label
-					htmlFor={contentFieldId}
-					className='text-sm text-neutral-300'>
-					regeltext
-				</Label>
-				<textarea
+				<Label htmlFor={contentFieldId}>regeltext</Label>
+				<Textarea
 					id={contentFieldId}
 					value={formState.content}
 					onChange={handleContentChange}
@@ -58,12 +56,8 @@ export function RuleFormFields({
 			</div>
 
 			<div className='space-y-1.5'>
-				<Label
-					htmlFor={noteFieldId}
-					className='text-sm text-neutral-300'>
-					notiz
-				</Label>
-				<input
+				<Label htmlFor={noteFieldId}>notiz</Label>
+				<Input
 					id={noteFieldId}
 					type='text'
 					value={formState.note}
@@ -74,12 +68,8 @@ export function RuleFormFields({
 			</div>
 
 			<div className='space-y-1.5'>
-				<Label
-					htmlFor={priorityFieldId}
-					className='text-sm text-neutral-300'>
-					priorität
-				</Label>
-				<input
+				<Label htmlFor={priorityFieldId}>priorität</Label>
+				<Input
 					id={priorityFieldId}
 					type='number'
 					value={formState.priority}
@@ -89,8 +79,8 @@ export function RuleFormFields({
 				/>
 			</div>
 
-			<div className='grid gap-2 sm:grid-cols-2'>
-				<div className='flex items-center justify-between border border-neutral-800 bg-neutral-950 p-3'>
+			<div className='grid gap-3 border-t border-neutral-800/70 pt-3 sm:grid-cols-2'>
+				<div className='flex items-center justify-between gap-4 py-1'>
 					<div className='space-y-0.5'>
 						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
 							new
@@ -106,7 +96,7 @@ export function RuleFormFields({
 					/>
 				</div>
 
-				<div className='flex items-center justify-between border border-neutral-800 bg-neutral-950 p-3'>
+				<div className='flex items-center justify-between gap-4 py-1'>
 					<div className='space-y-0.5'>
 						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
 							limited
@@ -126,12 +116,8 @@ export function RuleFormFields({
 			{formState.isLimitedTime && (
 				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
 					<div className='space-y-1.5'>
-						<Label
-							htmlFor={limitedStartFieldId}
-							className='text-sm text-neutral-300'>
-							start
-						</Label>
-						<input
+						<Label htmlFor={limitedStartFieldId}>start</Label>
+						<Input
 							id={limitedStartFieldId}
 							type='datetime-local'
 							value={formState.limitedStartAt}
@@ -140,12 +126,8 @@ export function RuleFormFields({
 						/>
 					</div>
 					<div className='space-y-1.5'>
-						<Label
-							htmlFor={limitedEndFieldId}
-							className='text-sm text-neutral-300'>
-							ende
-						</Label>
-						<input
+						<Label htmlFor={limitedEndFieldId}>ende</Label>
+						<Input
 							id={limitedEndFieldId}
 							type='datetime-local'
 							value={formState.limitedEndAt}

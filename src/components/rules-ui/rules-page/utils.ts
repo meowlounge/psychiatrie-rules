@@ -12,50 +12,17 @@ export function formatSyncTime(timestamp: string | null) {
 }
 
 export function getInputClassName() {
-	return [
-		'w-full',
-		'bg-neutral-900',
-		'text-neutral-100',
-		'placeholder:text-neutral-600',
-		'border',
-		'border-neutral-700',
-		'px-3',
-		'py-2',
-		'min-h-10',
-		'text-sm',
-		'leading-5',
-		'outline-none',
-		'focus-visible:border-neutral-500',
-		'focus-visible:ring-1',
-		'focus-visible:ring-neutral-500/60',
-		'transition-colors',
-	].join(' ');
+	return ['min-h-10', 'text-sm', 'leading-5'].join(' ');
 }
 
 export function getActionButtonClassName() {
 	return [
-		'inline-flex',
-		'items-center',
-		'justify-center',
-		'gap-2',
 		'px-3',
 		'py-1.5',
 		'min-h-10',
 		'text-sm',
 		'uppercase',
 		'tracking-[0.08em]',
-		'bg-neutral-800',
-		'text-neutral-100',
-		'border',
-		'border-neutral-700',
-		'transition-colors',
-		'hover:bg-neutral-700',
-		'focus-visible:outline-none',
-		'focus-visible:ring-1',
-		'focus-visible:ring-neutral-500/60',
-		'disabled:cursor-not-allowed',
-		'disabled:bg-neutral-900',
-		'disabled:text-neutral-500',
 	].join(' ');
 }
 

@@ -142,12 +142,12 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 						role='status'
 						aria-live='polite'>
 						{loadError && (
-							<p className='border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm text-neutral-300'>
+							<p className='border border-neutral-800 px-3 py-2 text-sm text-neutral-300'>
 								{loadError}
 							</p>
 						)}
 						{syncError && (
-							<p className='border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm text-neutral-300'>
+							<p className='border border-neutral-800 px-3 py-2 text-sm text-neutral-300'>
 								{syncError}
 							</p>
 						)}
@@ -155,7 +155,7 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 				)}
 
 				{liveRules.length === 0 ? (
-					<p className='border border-neutral-800 bg-neutral-950 px-3 py-3 text-sm text-muted-foreground sm:text-base'>
+					<p className='border border-neutral-800 px-3 py-3 text-sm text-muted-foreground sm:text-base'>
 						keine regeln verfügbar.
 					</p>
 				) : (
