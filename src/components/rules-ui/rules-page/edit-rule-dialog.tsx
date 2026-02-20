@@ -181,19 +181,19 @@ export function EditRuleDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-2xl'>
+			<DialogContent className='sm:max-w-2xl'>
 				<DialogHeader>
-					<DialogTitle className='text-base uppercase tracking-[0.08em]'>
-						regel bearbeiten
-					</DialogTitle>
-					<DialogDescription className='text-sm text-neutral-400'>
+					<DialogTitle>regel bearbeiten</DialogTitle>
+					<DialogDescription>
 						{ruleReference
 							? `änderungen an regel ${ruleReference}`
 							: 'änderungen werden sofort live veröffentlicht'}
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={handleSubmit} className='space-y-4'>
+				<form
+					onSubmit={handleSubmit}
+					className='space-y-4 px-4 py-4 sm:px-5 sm:py-5'>
 					<RuleFormFields
 						idPrefix='edit-rule'
 						formState={formState}
@@ -207,7 +207,7 @@ export function EditRuleDialog({
 						handleLimitedEndAtChange={handleLimitedEndAtChange}
 					/>
 
-					<div className='flex flex-col-reverse gap-2 border-t border-neutral-800/70 pt-3 sm:flex-row sm:justify-end'>
+					<div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
 						<DialogClose asChild>
 							<Button
 								type='button'
@@ -226,7 +226,11 @@ export function EditRuleDialog({
 					</div>
 				</form>
 
-				{error && <p className='text-sm text-neutral-400'>{error}</p>}
+				{error && (
+					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-5 sm:pb-5'>
+						{error}
+					</p>
+				)}
 			</DialogContent>
 		</Dialog>
 	);

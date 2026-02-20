@@ -106,28 +106,29 @@ export function DeleteRuleDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
+			<DialogContent className='sm:max-w-md'>
 				<DialogHeader>
-					<DialogTitle className='flex items-center gap-2 text-base uppercase tracking-[0.08em]'>
-						<AlertTriangleIcon className='h-4 w-4 text-neutral-300' />
+					<DialogTitle className='flex items-center gap-2'>
+						<AlertTriangleIcon className='h-4 w-4 text-foreground' />
 						regel löschen
 					</DialogTitle>
-					<DialogDescription className='text-sm text-neutral-400'>
+					<DialogDescription>
 						die regel wird deaktiviert und live aus der liste
 						entfernt
 					</DialogDescription>
 				</DialogHeader>
-				<p className='text-xs text-neutral-500'>
-					diese aktion kann nicht rückgängig gemacht werden.
-				</p>
 
-				<div className='space-y-4 border-t border-neutral-800/70 pt-4'>
+				<div className='space-y-4 px-4 py-4 sm:px-5 sm:py-5'>
+					<p className='text-xs text-muted-foreground'>
+						diese aktion kann nicht rückgängig gemacht werden.
+					</p>
+
 					{rule && (
 						<div className='space-y-1'>
-							<p className='text-xs uppercase tracking-[0.08em] text-neutral-500'>
+							<p className='text-xs uppercase tracking-[0.08em] text-muted-foreground'>
 								zu löschende regel
 							</p>
-							<p className='text-sm leading-relaxed text-neutral-300'>
+							<p className='text-sm leading-relaxed text-foreground'>
 								{rulePreviewText}
 							</p>
 						</div>
@@ -135,10 +136,10 @@ export function DeleteRuleDialog({
 
 					<div className='flex items-center justify-between gap-4'>
 						<div className='space-y-0.5'>
-							<p className='text-xs uppercase tracking-[0.08em] text-neutral-500'>
+							<p className='text-xs uppercase tracking-[0.08em] text-muted-foreground'>
 								löschung bestätigen
 							</p>
-							<p className='text-sm text-neutral-300'>
+							<p className='text-sm text-foreground'>
 								ich will diese regel entfernen
 							</p>
 						</div>
@@ -151,7 +152,7 @@ export function DeleteRuleDialog({
 					</div>
 				</div>
 
-				<DialogFooter className='border-t border-neutral-800/70 pt-3'>
+				<DialogFooter>
 					<DialogClose asChild>
 						<Button type='button' className={actionButtonClassName}>
 							abbrechen
@@ -167,7 +168,9 @@ export function DeleteRuleDialog({
 				</DialogFooter>
 
 				{error && (
-					<p className='text-sm text-neutral-300'>fehler: {error}</p>
+					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-5 sm:pb-5'>
+						fehler: {error}
+					</p>
 				)}
 			</DialogContent>
 		</Dialog>

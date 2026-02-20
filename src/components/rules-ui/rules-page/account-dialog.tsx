@@ -70,22 +70,20 @@ export function AccountDialog({
 					<UserRoundIcon className='h-4 w-4' />
 				</Button>
 			</DialogTrigger>
-			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
+			<DialogContent className='sm:max-w-md'>
 				<DialogHeader>
-					<DialogTitle className='text-base uppercase tracking-[0.08em]'>
-						konto
-					</DialogTitle>
-					<DialogDescription className='text-sm text-neutral-400'>
+					<DialogTitle>konto</DialogTitle>
+					<DialogDescription>
 						passwort-login für admin-zugriff
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className='space-y-4 text-sm text-neutral-300'>
+				<div className='space-y-4 px-4 py-4 text-sm text-foreground sm:px-5 sm:py-5'>
 					{isAuthBusy && (
 						<p
 							role='status'
 							aria-live='polite'
-							className='border border-neutral-800 px-3 py-2 text-neutral-300'>
+							className='border border-border px-3 py-2 text-foreground'>
 							anmeldung wird geprüft ...
 						</p>
 					)}
@@ -95,10 +93,10 @@ export function AccountDialog({
 							onSubmit={handleSubmitLogin}
 							className='space-y-3'>
 							<div className='space-y-1'>
-								<p className='text-sm text-neutral-200'>
+								<p className='text-sm text-foreground'>
 									nicht eingeloggt
 								</p>
-								<p className='text-xs text-neutral-500'>
+								<p className='text-xs text-muted-foreground'>
 									melde dich mit dem admin-passwort an
 								</p>
 							</div>
@@ -127,18 +125,18 @@ export function AccountDialog({
 
 					{accessToken && !isAuthBusy && (
 						<div className='space-y-3'>
-							<div className='space-y-2 border border-neutral-800 p-3'>
-								<p className='text-xs uppercase tracking-[0.08em] text-neutral-500'>
+							<div className='space-y-2 border border-border p-3'>
+								<p className='text-xs uppercase tracking-[0.08em] text-muted-foreground'>
 									angemeldet als
 								</p>
-								<p className='break-all text-sm text-neutral-200'>
+								<p className='break-all text-sm text-foreground'>
 									{authenticatedEmail ?? 'ohne e-mail'}
 								</p>
 								<p className='flex items-center gap-2 text-sm'>
 									{canCreateRules ? (
-										<ShieldCheckIcon className='h-4 w-4 text-neutral-200' />
+										<ShieldCheckIcon className='h-4 w-4 text-foreground' />
 									) : (
-										<ShieldXIcon className='h-4 w-4 text-neutral-500' />
+										<ShieldXIcon className='h-4 w-4 text-muted-foreground' />
 									)}
 									{canCreateRules
 										? 'admin freigeschaltet'
@@ -157,7 +155,7 @@ export function AccountDialog({
 					)}
 
 					{authError && (
-						<p className='border border-neutral-700 px-3 py-2 text-sm text-neutral-300'>
+						<p className='border border-border px-3 py-2 text-sm text-muted-foreground'>
 							{authError}
 						</p>
 					)}

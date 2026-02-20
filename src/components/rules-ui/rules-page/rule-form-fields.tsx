@@ -79,13 +79,13 @@ export function RuleFormFields({
 				/>
 			</div>
 
-			<div className='grid gap-3 border-t border-neutral-800/70 pt-3 sm:grid-cols-2'>
+			<div className='grid gap-3 border-t border-border pt-3 sm:grid-cols-2'>
 				<div className='flex items-center justify-between gap-4 py-1'>
 					<div className='space-y-0.5'>
-						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
+						<p className='text-sm uppercase tracking-[0.08em] text-foreground'>
 							new
 						</p>
-						<p className='text-xs text-neutral-500'>
+						<p className='text-xs text-muted-foreground'>
 							wird in der regel-liste markiert
 						</p>
 					</div>
@@ -98,10 +98,10 @@ export function RuleFormFields({
 
 				<div className='flex items-center justify-between gap-4 py-1'>
 					<div className='space-y-0.5'>
-						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
+						<p className='text-sm uppercase tracking-[0.08em] text-foreground'>
 							limited
 						</p>
-						<p className='text-xs text-neutral-500'>
+						<p className='text-xs text-muted-foreground'>
 							zeitfenster für diese regel aktivieren
 						</p>
 					</div>

@@ -48,14 +48,14 @@ function getStatusList(rule: RuleViewModel): RuleStatus[] {
 	if (rule.isNew) {
 		statuses.push({
 			label: 'new',
-			className: 'bg-neutral-200 text-neutral-950',
+			className: 'bg-foreground text-background',
 		});
 	}
 
 	if (rule.isLimitedTime) {
 		statuses.push({
 			label: 'limited',
-			className: 'bg-neutral-600 text-neutral-100',
+			className: 'border border-border bg-muted text-foreground',
 		});
 	}
 
@@ -76,7 +76,7 @@ export function RuleCard({
 	const statuses = useMemo(() => getStatusList(rule), [rule]);
 
 	return (
-		<article className='group space-y-2 border-t border-neutral-800 pt-5 first:border-t-0 first:pt-0'>
+		<article className='group space-y-2 border-t border-border pt-5 first:border-t-0 first:pt-0'>
 			<div className='flex flex-wrap items-center justify-between gap-2'>
 				<div className='flex flex-wrap items-center gap-2'>
 					<p className='text-sm text-muted-foreground'>
@@ -97,14 +97,14 @@ export function RuleCard({
 						<Button
 							type='button'
 							onClick={() => handleEditRule(rule)}
-							className='flex h-8 w-8 items-center justify-center text-neutral-300'
+							className='flex h-8 w-8 items-center justify-center text-muted-foreground'
 							aria-label='regel bearbeiten'>
 							<PencilLineIcon className='h-4 w-4' />
 						</Button>
 						<Button
 							type='button'
 							onClick={() => handleDeleteRule(rule)}
-							className='flex h-8 w-8 items-center justify-center text-neutral-400'
+							className='flex h-8 w-8 items-center justify-center text-muted-foreground'
 							aria-label='regel löschen'>
 							<Trash2Icon className='h-4 w-4' />
 						</Button>

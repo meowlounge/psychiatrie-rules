@@ -87,17 +87,17 @@ export function CreateRuleSection({
 					regel erstellen
 				</Button>
 			</DialogTrigger>
-			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-2xl'>
+			<DialogContent className='sm:max-w-2xl'>
 				<DialogHeader>
-					<DialogTitle className='text-base uppercase tracking-[0.08em]'>
-						regel erstellen
-					</DialogTitle>
-					<DialogDescription className='text-sm text-neutral-400'>
+					<DialogTitle>regel erstellen</DialogTitle>
+					<DialogDescription>
 						neue regel wird sofort live veröffentlicht
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={handleCreateRule} className='space-y-4'>
+				<form
+					onSubmit={handleCreateRule}
+					className='space-y-4 px-4 py-4 sm:px-5 sm:py-5'>
 					<RuleFormFields
 						idPrefix='create-rule'
 						formState={formState}
@@ -111,7 +111,7 @@ export function CreateRuleSection({
 						handleLimitedEndAtChange={handleLimitedEndAtChange}
 					/>
 
-					<div className='flex flex-col-reverse gap-2 border-t border-neutral-800/70 pt-3 sm:flex-row sm:justify-end'>
+					<div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
 						<DialogClose asChild>
 							<Button
 								type='button'
@@ -131,13 +131,13 @@ export function CreateRuleSection({
 				</form>
 
 				{createRuleError && (
-					<p className='text-sm text-neutral-400'>
+					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-5 sm:pb-5'>
 						{createRuleError}
 					</p>
 				)}
 
 				{createRuleSuccess && (
-					<p className='text-sm text-neutral-300'>
+					<p className='px-4 pb-4 text-sm text-foreground sm:px-5 sm:pb-5'>
 						{createRuleSuccess}
 					</p>
 				)}

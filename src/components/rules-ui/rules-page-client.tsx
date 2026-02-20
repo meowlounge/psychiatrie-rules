@@ -70,8 +70,8 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 
 	return (
 		<main className='min-h-screen pb-6'>
-			<div className='border border-neutral-800/70'>
-				<header className='border-b border-neutral-800/70 px-4 py-4 sm:px-5 sm:py-5'>
+			<div className='border border-border'>
+				<header className='border-b border-border px-4 py-4 sm:px-5 sm:py-5'>
 					<div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
 						<div className='space-y-2'>
 							<div className='flex items-center gap-3'>
@@ -81,8 +81,8 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 								<span
 									className={`px-1.5 py-0.5 text-xs uppercase tracking-[0.08em] ${
 										isSyncing
-											? 'animate-pulse bg-neutral-700 text-neutral-100'
-											: 'bg-neutral-800 text-neutral-400'
+											? 'animate-pulse bg-foreground text-background'
+											: 'bg-muted text-muted-foreground'
 									}`}>
 									live
 								</span>
@@ -138,16 +138,16 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 
 				{hasPageNotice && (
 					<section
-						className='space-y-2 border-b border-neutral-800/70 px-4 py-3 sm:px-5 sm:py-4'
+						className='space-y-2 border-b border-border px-4 py-3 sm:px-5 sm:py-4'
 						role='status'
 						aria-live='polite'>
 						{loadError && (
-							<p className='border border-neutral-800 px-3 py-2 text-sm text-neutral-300'>
+							<p className='border border-border px-3 py-2 text-sm text-foreground'>
 								{loadError}
 							</p>
 						)}
 						{syncError && (
-							<p className='border border-neutral-800 px-3 py-2 text-sm text-neutral-300'>
+							<p className='border border-border px-3 py-2 text-sm text-foreground'>
 								{syncError}
 							</p>
 						)}
