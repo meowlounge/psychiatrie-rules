@@ -41,8 +41,8 @@ export function RuleFormFields({
 	const limitedEndFieldId = `${idPrefix}-limited-end`;
 
 	return (
-		<div className='space-y-4'>
-			<div className='space-y-1.5'>
+		<div className='space-y-5'>
+			<div className='space-y-2'>
 				<Label htmlFor={contentFieldId}>regeltext</Label>
 				<Textarea
 					id={contentFieldId}
@@ -55,7 +55,7 @@ export function RuleFormFields({
 				/>
 			</div>
 
-			<div className='space-y-1.5'>
+			<div className='space-y-2'>
 				<Label htmlFor={noteFieldId}>notiz</Label>
 				<Input
 					id={noteFieldId}
@@ -67,7 +67,7 @@ export function RuleFormFields({
 				/>
 			</div>
 
-			<div className='space-y-1.5'>
+			<div className='space-y-2'>
 				<Label htmlFor={priorityFieldId}>priorität</Label>
 				<Input
 					id={priorityFieldId}
@@ -79,7 +79,7 @@ export function RuleFormFields({
 				/>
 			</div>
 
-			<div className='grid gap-3 border-t border-border pt-3 sm:grid-cols-2'>
+			<div className='grid gap-4 border-t border-border pt-4 sm:grid-cols-2'>
 				<div className='flex items-center justify-between gap-4 py-1'>
 					<div className='space-y-0.5'>
 						<p className='text-sm uppercase tracking-[0.08em] text-foreground'>
@@ -114,8 +114,8 @@ export function RuleFormFields({
 			</div>
 
 			{formState.isLimitedTime && (
-				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
-					<div className='space-y-1.5'>
+				<div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+					<div className='space-y-2'>
 						<Label htmlFor={limitedStartFieldId}>start</Label>
 						<Input
 							id={limitedStartFieldId}
@@ -125,7 +125,7 @@ export function RuleFormFields({
 							className={inputClassName}
 						/>
 					</div>
-					<div className='space-y-1.5'>
+					<div className='space-y-2'>
 						<Label htmlFor={limitedEndFieldId}>ende</Label>
 						<Input
 							id={limitedEndFieldId}

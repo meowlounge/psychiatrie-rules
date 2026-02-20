@@ -193,7 +193,7 @@ export function EditRuleDialog({
 
 				<form
 					onSubmit={handleSubmit}
-					className='space-y-4 px-4 py-4 sm:px-5 sm:py-5'>
+					className='space-y-5 px-4 py-4 sm:px-6 sm:py-6'>
 					<RuleFormFields
 						idPrefix='edit-rule'
 						formState={formState}
@@ -227,7 +227,7 @@ export function EditRuleDialog({
 				</form>
 
 				{error && (
-					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-5 sm:pb-5'>
+					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-6 sm:pb-6'>
 						{error}
 					</p>
 				)}

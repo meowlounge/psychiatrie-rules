@@ -78,7 +78,7 @@ export function AccountDialog({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className='space-y-4 px-4 py-4 text-sm text-foreground sm:px-5 sm:py-5'>
+				<div className='space-y-5 px-4 py-4 text-sm text-foreground sm:px-6 sm:py-6'>
 					{isAuthBusy && (
 						<p
 							role='status'
@@ -91,7 +91,7 @@ export function AccountDialog({
 					{!accessToken && !isAuthBusy && (
 						<form
 							onSubmit={handleSubmitLogin}
-							className='space-y-3'>
+							className='space-y-4'>
 							<div className='space-y-1'>
 								<p className='text-sm text-foreground'>
 									nicht eingeloggt

@@ -69,13 +69,13 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 	const hasPageNotice = Boolean(loadError || syncError);
 
 	return (
-		<main className='min-h-screen pb-6'>
-			<div className='border border-border'>
-				<header className='border-b border-border px-4 py-4 sm:px-5 sm:py-5'>
-					<div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
+		<main className='min-h-screen pb-8 sm:pb-10'>
+			<div className='space-y-8 sm:space-y-10'>
+				<header className='space-y-5 border-b border-border pb-6 sm:space-y-6 sm:pb-8'>
+					<div className='flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between'>
 						<div className='space-y-2'>
 							<div className='flex items-center gap-3'>
-								<h1 className='text-lg leading-tight sm:text-xl'>
+								<h1 className='text-xl leading-tight sm:text-2xl'>
 									psychiatrie regeln
 								</h1>
 								<span
@@ -87,12 +87,12 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 									live
 								</span>
 							</div>
-							<p className='text-sm text-muted-foreground'>
+							<p className='text-sm text-muted-foreground sm:text-base'>
 								{liveRules.length} regeln · zuletzt
 								aktualisiert: {formatSyncTime(lastSyncedAt)}
 							</p>
 						</div>
-						<div className='flex flex-wrap items-center gap-2'>
+						<div className='flex flex-wrap items-center gap-3'>
 							<CreateRuleSection
 								canCreateRules={canCreateRules}
 								formState={formState}
@@ -138,16 +138,16 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 
 				{hasPageNotice && (
 					<section
-						className='space-y-2 border-b border-border px-4 py-3 sm:px-5 sm:py-4'
+						className='space-y-3'
 						role='status'
 						aria-live='polite'>
 						{loadError && (
-							<p className='border border-border px-3 py-2 text-sm text-foreground'>
+							<p className='border border-border px-4 py-3 text-sm text-foreground'>
 								{loadError}
 							</p>
 						)}
 						{syncError && (
-							<p className='border border-border px-3 py-2 text-sm text-foreground'>
+							<p className='border border-border px-4 py-3 text-sm text-foreground'>
 								{syncError}
 							</p>
 						)}
@@ -155,7 +155,7 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 				)}
 
 				<section
-					className={`px-4 py-4 transition-all duration-150 sm:px-5 sm:py-5 ${
+					className={`transition-all duration-150 ${
 						isSyncing ? 'opacity-90' : ''
 					}`}>
 					{liveRules.length === 0 ? (
@@ -163,7 +163,7 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 							keine regeln verfügbar.
 						</p>
 					) : (
-						<div className='space-y-5 sm:space-y-6'>
+						<div className='space-y-6 sm:space-y-8'>
 							{liveRules.map((rule, index) => (
 								<RuleCard
 									key={rule.id}

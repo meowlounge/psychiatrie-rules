@@ -40,7 +40,7 @@ function DialogOverlay({
 		<DialogPrimitive.Overlay
 			data-slot='dialog-overlay'
 			className={cn(
-				'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-background/80',
+				'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-background/72',
 				className
 			)}
 			{...props}
@@ -70,7 +70,7 @@ function DialogContent({
 				{showCloseButton && (
 					<DialogPrimitive.Close
 						data-slot='dialog-close'
-						className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center border-0 bg-transparent text-muted-foreground transition-colors hover:bg-foreground hover:text-background focus:outline-none focus-visible:ring-1 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:text-muted-foreground/60 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 sm:top-4 sm:right-4">
+						className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center border-0 bg-transparent text-muted-foreground transition-colors hover:bg-foreground hover:text-background focus:outline-none focus-visible:ring-1 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:text-muted-foreground/60 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 sm:top-4 sm:right-5">
 						<XIcon />
 						<span className='sr-only'>Close</span>
 					</DialogPrimitive.Close>
@@ -85,7 +85,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
 		<div
 			data-slot='dialog-header'
 			className={cn(
-				'flex flex-col gap-1 border-b border-border px-4 py-3 text-left sm:px-5 sm:py-4',
+				'flex flex-col gap-2 border-b border-border px-4 py-4 text-left sm:px-6 sm:py-5',
 				className
 			)}
 			{...props}
@@ -105,7 +105,7 @@ function DialogFooter({
 		<div
 			data-slot='dialog-footer'
 			className={cn(
-				'flex flex-col-reverse gap-2 border-t border-border px-4 py-3 sm:flex-row sm:justify-end sm:px-5 sm:py-4',
+				'flex flex-col-reverse gap-2 border-t border-border px-4 py-4 sm:flex-row sm:justify-end sm:px-6 sm:py-5',
 				className
 			)}
 			{...props}>

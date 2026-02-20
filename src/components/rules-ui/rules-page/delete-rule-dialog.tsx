@@ -118,7 +118,7 @@ export function DeleteRuleDialog({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className='space-y-4 px-4 py-4 sm:px-5 sm:py-5'>
+				<div className='space-y-5 px-4 py-4 sm:px-6 sm:py-6'>
 					<p className='text-xs text-muted-foreground'>
 						diese aktion kann nicht rückgängig gemacht werden.
 					</p>
@@ -168,7 +168,7 @@ export function DeleteRuleDialog({
 				</DialogFooter>
 
 				{error && (
-					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-5 sm:pb-5'>
+					<p className='px-4 pb-4 text-sm text-muted-foreground sm:px-6 sm:pb-6'>
 						fehler: {error}
 					</p>
 				)}

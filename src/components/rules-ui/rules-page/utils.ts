@@ -12,14 +12,14 @@ export function formatSyncTime(timestamp: string | null) {
 }
 
 export function getInputClassName() {
-	return ['min-h-10', 'text-sm', 'leading-5'].join(' ');
+	return ['min-h-11', 'text-[15px]', 'leading-6'].join(' ');
 }
 
 export function getActionButtonClassName() {
 	return [
-		'px-3',
-		'py-1.5',
-		'min-h-10',
+		'px-4',
+		'py-2',
+		'min-h-11',
 		'text-sm',
 		'uppercase',
 		'tracking-[0.08em]',
