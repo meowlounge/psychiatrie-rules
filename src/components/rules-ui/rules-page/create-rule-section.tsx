@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogClose,
@@ -81,10 +82,10 @@ export function CreateRuleSection({
 	return (
 		<Dialog open={isCreateDialogOpen} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>
-				<button type='button' className={actionButtonClassName}>
+				<Button type='button' className={actionButtonClassName}>
 					<PlusIcon className='h-4 w-4' />
 					regel erstellen
-				</button>
+				</Button>
 			</DialogTrigger>
 			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-2xl'>
 				<DialogHeader>
@@ -112,20 +113,20 @@ export function CreateRuleSection({
 
 					<div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
 						<DialogClose asChild>
-							<button
+							<Button
 								type='button'
-								className={`${actionButtonClassName} border border-neutral-700 bg-neutral-900`}>
+								className={actionButtonClassName}>
 								abbrechen
-							</button>
+							</Button>
 						</DialogClose>
-						<button
+						<Button
 							type='submit'
 							disabled={isSubmittingRule}
 							className={actionButtonClassName}>
 							{isSubmittingRule
 								? 'wird erstellt ...'
 								: 'regel speichern'}
-						</button>
+						</Button>
 					</div>
 				</form>
 

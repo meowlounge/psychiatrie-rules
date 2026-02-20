@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogClose,
@@ -208,20 +209,20 @@ export function EditRuleDialog({
 
 					<div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
 						<DialogClose asChild>
-							<button
+							<Button
 								type='button'
-								className={`${actionButtonClassName} border border-neutral-700 bg-neutral-900`}>
+								className={actionButtonClassName}>
 								abbrechen
-							</button>
+							</Button>
 						</DialogClose>
-						<button
+						<Button
 							type='submit'
 							disabled={isSubmitting}
 							className={actionButtonClassName}>
 							{isSubmitting
 								? 'wird gespeichert ...'
 								: 'änderungen speichern'}
-						</button>
+						</Button>
 					</div>
 				</form>
 

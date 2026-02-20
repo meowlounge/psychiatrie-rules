@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+
 import type { RuleViewModel } from '@/types/rules';
 
 import { PencilLineIcon, Trash2Icon } from 'lucide-react';
@@ -92,20 +94,20 @@ export function RuleCard({
 
 				{canManageRule && (
 					<div className='flex items-center gap-1 opacity-100 transition-opacity duration-150 sm:pointer-events-none sm:opacity-0 sm:group-hover:pointer-events-auto sm:group-hover:opacity-100'>
-						<button
+						<Button
 							type='button'
 							onClick={() => handleEditRule(rule)}
-							className='flex h-8 w-8 items-center justify-center border border-neutral-700 bg-neutral-900 text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-500/60'
+							className='flex h-8 w-8 items-center justify-center text-neutral-300'
 							aria-label='regel bearbeiten'>
 							<PencilLineIcon className='h-4 w-4' />
-						</button>
-						<button
+						</Button>
+						<Button
 							type='button'
 							onClick={() => handleDeleteRule(rule)}
-							className='flex h-8 w-8 items-center justify-center border border-neutral-700 bg-neutral-900 text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-500/60'
+							className='flex h-8 w-8 items-center justify-center text-neutral-400'
 							aria-label='regel löschen'>
 							<Trash2Icon className='h-4 w-4' />
-						</button>
+						</Button>
 					</div>
 				)}
 			</div>
