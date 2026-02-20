@@ -82,16 +82,16 @@ export function CreateRuleSection({
 		<Dialog open={isCreateDialogOpen} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>
 				<button type='button' className={actionButtonClassName}>
-					<PlusIcon className='h-3.5 w-3.5' />
+					<PlusIcon className='h-4 w-4' />
 					regel erstellen
 				</button>
 			</DialogTrigger>
-			<DialogContent className='border-stone-700 bg-stone-900 text-stone-100 sm:max-w-2xl'>
+			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-2xl'>
 				<DialogHeader>
-					<DialogTitle className='text-sm uppercase tracking-[0.08em]'>
+					<DialogTitle className='text-base uppercase tracking-[0.08em]'>
 						regel erstellen
 					</DialogTitle>
-					<DialogDescription className='text-xs text-stone-400'>
+					<DialogDescription className='text-sm text-neutral-400'>
 						neue regel wird sofort live veröffentlicht
 					</DialogDescription>
 				</DialogHeader>
@@ -114,7 +114,7 @@ export function CreateRuleSection({
 						<DialogClose asChild>
 							<button
 								type='button'
-								className={`${actionButtonClassName} border border-stone-700 bg-stone-900`}>
+								className={`${actionButtonClassName} border border-neutral-700 bg-neutral-900`}>
 								abbrechen
 							</button>
 						</DialogClose>
@@ -130,11 +130,13 @@ export function CreateRuleSection({
 				</form>
 
 				{createRuleError && (
-					<p className='text-xs text-stone-400'>{createRuleError}</p>
+					<p className='text-sm text-neutral-400'>
+						{createRuleError}
+					</p>
 				)}
 
 				{createRuleSuccess && (
-					<p className='text-xs text-stone-300'>
+					<p className='text-sm text-neutral-300'>
 						{createRuleSuccess}
 					</p>
 				)}

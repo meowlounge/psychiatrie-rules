@@ -46,14 +46,14 @@ function getStatusList(rule: RuleViewModel): RuleStatus[] {
 	if (rule.isNew) {
 		statuses.push({
 			label: 'new',
-			className: 'bg-stone-200 text-stone-950',
+			className: 'bg-neutral-200 text-neutral-950',
 		});
 	}
 
 	if (rule.isLimitedTime) {
 		statuses.push({
 			label: 'limited',
-			className: 'bg-stone-600 text-stone-100',
+			className: 'bg-neutral-600 text-neutral-100',
 		});
 	}
 
@@ -74,17 +74,17 @@ export function RuleCard({
 	const statuses = useMemo(() => getStatusList(rule), [rule]);
 
 	return (
-		<article className='group space-y-2 border-t border-stone-800 pt-5 first:border-t-0 first:pt-0'>
+		<article className='group space-y-2 border-t border-neutral-800 pt-5 first:border-t-0 first:pt-0'>
 			<div className='flex flex-wrap items-center justify-between gap-2'>
 				<div className='flex flex-wrap items-center gap-2'>
-					<p className='text-xs text-muted-foreground sm:text-sm'>
+					<p className='text-sm text-muted-foreground'>
 						regel {index + 1}
 					</p>
 
 					{statuses.map((status) => (
 						<span
 							key={status.label}
-							className={`${status.className} px-1.5 py-0.5 text-[11px] uppercase tracking-[0.08em] sm:text-xs`}>
+							className={`${status.className} px-1.5 py-0.5 text-xs uppercase tracking-[0.08em]`}>
 							{status.label}
 						</span>
 					))}
@@ -95,33 +95,33 @@ export function RuleCard({
 						<button
 							type='button'
 							onClick={() => handleEditRule(rule)}
-							className='flex h-7 w-7 items-center justify-center border border-stone-700 bg-stone-900 text-stone-300 transition-colors hover:bg-stone-800 hover:text-stone-100'
+							className='flex h-8 w-8 items-center justify-center border border-neutral-700 bg-neutral-900 text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-500/60'
 							aria-label='regel bearbeiten'>
-							<PencilLineIcon className='h-3.5 w-3.5' />
+							<PencilLineIcon className='h-4 w-4' />
 						</button>
 						<button
 							type='button'
 							onClick={() => handleDeleteRule(rule)}
-							className='flex h-7 w-7 items-center justify-center border border-stone-700 bg-stone-900 text-stone-400 transition-colors hover:bg-stone-800 hover:text-stone-200'
+							className='flex h-8 w-8 items-center justify-center border border-neutral-700 bg-neutral-900 text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-500/60'
 							aria-label='regel löschen'>
-							<Trash2Icon className='h-3.5 w-3.5' />
+							<Trash2Icon className='h-4 w-4' />
 						</button>
 					</div>
 				)}
 			</div>
 
-			<p className='text-sm leading-relaxed sm:text-base'>
+			<p className='text-base leading-relaxed sm:text-lg'>
 				{rule.content}
 			</p>
 
 			{rule.note && (
-				<p className='text-xs text-muted-foreground sm:text-sm'>
+				<p className='text-sm text-muted-foreground'>
 					notiz: {rule.note}
 				</p>
 			)}
 
 			{limitedTimeText && (
-				<p className='text-xs text-muted-foreground sm:text-sm'>
+				<p className='text-sm text-muted-foreground'>
 					zeitfenster: {limitedTimeText}
 				</p>
 			)}

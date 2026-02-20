@@ -180,12 +180,12 @@ export function EditRuleDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='border-stone-700 bg-stone-900 text-stone-100 sm:max-w-2xl'>
+			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-2xl'>
 				<DialogHeader>
-					<DialogTitle className='text-sm uppercase tracking-[0.08em]'>
+					<DialogTitle className='text-base uppercase tracking-[0.08em]'>
 						regel bearbeiten
 					</DialogTitle>
-					<DialogDescription className='text-xs text-stone-400'>
+					<DialogDescription className='text-sm text-neutral-400'>
 						{ruleReference
 							? `änderungen an regel ${ruleReference}`
 							: 'änderungen werden sofort live veröffentlicht'}
@@ -210,7 +210,7 @@ export function EditRuleDialog({
 						<DialogClose asChild>
 							<button
 								type='button'
-								className={`${actionButtonClassName} border border-stone-700 bg-stone-900`}>
+								className={`${actionButtonClassName} border border-neutral-700 bg-neutral-900`}>
 								abbrechen
 							</button>
 						</DialogClose>
@@ -225,7 +225,7 @@ export function EditRuleDialog({
 					</div>
 				</form>
 
-				{error && <p className='text-xs text-stone-400'>{error}</p>}
+				{error && <p className='text-sm text-neutral-400'>{error}</p>}
 			</DialogContent>
 		</Dialog>
 	);

@@ -43,7 +43,7 @@ export function RuleFormFields({
 			<div className='space-y-1.5'>
 				<Label
 					htmlFor={contentFieldId}
-					className='text-xs text-stone-300'>
+					className='text-sm text-neutral-300'>
 					regeltext
 				</Label>
 				<textarea
@@ -58,7 +58,9 @@ export function RuleFormFields({
 			</div>
 
 			<div className='space-y-1.5'>
-				<Label htmlFor={noteFieldId} className='text-xs text-stone-300'>
+				<Label
+					htmlFor={noteFieldId}
+					className='text-sm text-neutral-300'>
 					notiz
 				</Label>
 				<input
@@ -74,7 +76,7 @@ export function RuleFormFields({
 			<div className='space-y-1.5'>
 				<Label
 					htmlFor={priorityFieldId}
-					className='text-xs text-stone-300'>
+					className='text-sm text-neutral-300'>
 					priorität
 				</Label>
 				<input
@@ -88,12 +90,12 @@ export function RuleFormFields({
 			</div>
 
 			<div className='grid gap-2 sm:grid-cols-2'>
-				<div className='flex items-center justify-between border border-stone-800 bg-stone-950 p-2.5'>
+				<div className='flex items-center justify-between border border-neutral-800 bg-neutral-950 p-3'>
 					<div className='space-y-0.5'>
-						<p className='text-xs uppercase tracking-[0.08em] text-stone-300'>
+						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
 							new
 						</p>
-						<p className='text-[11px] text-stone-500'>
+						<p className='text-xs text-neutral-500'>
 							wird in der regel-liste markiert
 						</p>
 					</div>
@@ -104,12 +106,12 @@ export function RuleFormFields({
 					/>
 				</div>
 
-				<div className='flex items-center justify-between border border-stone-800 bg-stone-950 p-2.5'>
+				<div className='flex items-center justify-between border border-neutral-800 bg-neutral-950 p-3'>
 					<div className='space-y-0.5'>
-						<p className='text-xs uppercase tracking-[0.08em] text-stone-300'>
+						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
 							limited
 						</p>
-						<p className='text-[11px] text-stone-500'>
+						<p className='text-xs text-neutral-500'>
 							zeitfenster für diese regel aktivieren
 						</p>
 					</div>
@@ -126,7 +128,7 @@ export function RuleFormFields({
 					<div className='space-y-1.5'>
 						<Label
 							htmlFor={limitedStartFieldId}
-							className='text-xs text-stone-300'>
+							className='text-sm text-neutral-300'>
 							start
 						</Label>
 						<input
@@ -140,7 +142,7 @@ export function RuleFormFields({
 					<div className='space-y-1.5'>
 						<Label
 							htmlFor={limitedEndFieldId}
-							className='text-xs text-stone-300'>
+							className='text-sm text-neutral-300'>
 							ende
 						</Label>
 						<input

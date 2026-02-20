@@ -46,6 +46,7 @@ export function AccountDialog({
 	handleSignOut,
 }: AccountDialogProps) {
 	const [password, setPassword] = useState('');
+	const isLoginDisabled = isLoggingIn || password.trim().length === 0;
 
 	const handleSubmitLogin = useCallback(
 		async (event: FormEvent<HTMLFormElement>) => {
@@ -61,30 +62,50 @@ export function AccountDialog({
 			<DialogTrigger asChild>
 				<button
 					type='button'
-					className='flex h-9 w-9 items-center justify-center border border-stone-700 bg-stone-900 text-stone-300 transition-colors hover:bg-stone-800 hover:text-stone-100'
+					className='flex h-10 w-10 items-center justify-center border border-neutral-700 bg-neutral-900 text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-500/60'
 					aria-label='konto öffnen'>
 					<UserRoundIcon className='h-4 w-4' />
 				</button>
 			</DialogTrigger>
-			<DialogContent className='border-stone-700 bg-stone-900 text-stone-100 sm:max-w-sm'>
+			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
 				<DialogHeader>
-					<DialogTitle className='text-sm uppercase tracking-[0.08em]'>
+					<DialogTitle className='text-base uppercase tracking-[0.08em]'>
 						konto
 					</DialogTitle>
-					<DialogDescription className='text-xs text-stone-400'>
+					<DialogDescription className='text-sm text-neutral-400'>
 						passwort-login für admin-zugriff
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className='space-y-3 text-xs text-stone-300'>
-					{isAuthBusy && <p>anmeldung wird geprüft ...</p>}
+				<div className='space-y-4 text-sm text-neutral-300'>
+					{isAuthBusy && (
+						<p
+							role='status'
+							aria-live='polite'
+							className='border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-300'>
+							anmeldung wird geprüft ...
+						</p>
+					)}
 
 					{!accessToken && !isAuthBusy && (
 						<form
 							onSubmit={handleSubmitLogin}
 							className='space-y-3'>
-							<p>nicht eingeloggt.</p>
+							<div className='space-y-1'>
+								<p className='text-sm text-neutral-200'>
+									nicht eingeloggt
+								</p>
+								<p className='text-xs text-neutral-500'>
+									melde dich mit dem admin-passwort an
+								</p>
+							</div>
+							<label
+								htmlFor='admin-password'
+								className='text-xs uppercase tracking-[0.08em] text-neutral-400'>
+								passwort
+							</label>
 							<input
+								id='admin-password'
 								type='password'
 								value={password}
 								onChange={(event) =>
@@ -92,13 +113,14 @@ export function AccountDialog({
 								}
 								placeholder='passwort'
 								autoComplete='current-password'
+								autoFocus
 								className={inputClassName}
 							/>
 							<button
 								type='submit'
-								disabled={isLoggingIn}
+								disabled={isLoginDisabled}
 								className={actionButtonClassName}>
-								<LogInIcon className='h-3.5 w-3.5' />
+								<LogInIcon className='h-4 w-4' />
 								{isLoggingIn ? 'login ...' : 'anmelden'}
 							</button>
 						</form>
@@ -106,31 +128,40 @@ export function AccountDialog({
 
 					{accessToken && !isAuthBusy && (
 						<div className='space-y-3'>
-							<p className='break-all text-stone-300'>
-								{authenticatedEmail ?? 'ohne e-mail'}
-							</p>
-							<p className='flex items-center gap-2'>
-								{canCreateRules ? (
-									<ShieldCheckIcon className='h-3.5 w-3.5 text-stone-200' />
-								) : (
-									<ShieldXIcon className='h-3.5 w-3.5 text-stone-500' />
-								)}
-								{canCreateRules
-									? 'admin freigeschaltet'
-									: 'kein admin-zugriff'}
-							</p>
+							<div className='space-y-2 border border-neutral-800 bg-neutral-950 p-3'>
+								<p className='text-xs uppercase tracking-[0.08em] text-neutral-500'>
+									angemeldet als
+								</p>
+								<p className='break-all text-sm text-neutral-200'>
+									{authenticatedEmail ?? 'ohne e-mail'}
+								</p>
+								<p className='flex items-center gap-2 text-sm'>
+									{canCreateRules ? (
+										<ShieldCheckIcon className='h-4 w-4 text-neutral-200' />
+									) : (
+										<ShieldXIcon className='h-4 w-4 text-neutral-500' />
+									)}
+									{canCreateRules
+										? 'admin freigeschaltet'
+										: 'kein admin-zugriff'}
+								</p>
+							</div>
 							<button
 								type='button'
 								onClick={handleSignOut}
 								disabled={isSigningOut}
 								className={actionButtonClassName}>
-								<LogOutIcon className='h-3.5 w-3.5' />
+								<LogOutIcon className='h-4 w-4' />
 								{isSigningOut ? 'logout ...' : 'abmelden'}
 							</button>
 						</div>
 					)}
 
-					{authError && <p className='text-stone-400'>{authError}</p>}
+					{authError && (
+						<p className='border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-300'>
+							{authError}
+						</p>
+					)}
 				</div>
 			</DialogContent>
 		</Dialog>

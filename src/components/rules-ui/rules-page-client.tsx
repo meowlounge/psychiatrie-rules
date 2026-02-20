@@ -66,32 +66,33 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 	const handleDeleteRule = useCallback((rule: RuleViewModel) => {
 		setRuleToDelete(rule);
 	}, []);
+	const hasPageNotice = Boolean(loadError || syncError);
 
 	return (
-		<main className='min-h-screen'>
+		<main className='min-h-screen pb-6'>
 			<div className='space-y-8 sm:space-y-10'>
 				<header className='space-y-2'>
-					<div className='flex items-start justify-between gap-4'>
+					<div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
 						<div className='space-y-2'>
 							<div className='flex items-center gap-3'>
-								<h1 className='text-base sm:text-lg'>
+								<h1 className='text-lg leading-tight sm:text-xl'>
 									psychiatrie regeln
 								</h1>
 								<span
-									className={`px-1 text-[11px] uppercase tracking-[0.08em] ${
+									className={`px-1.5 py-0.5 text-xs uppercase tracking-[0.08em] ${
 										isSyncing
-											? 'animate-pulse bg-stone-700 text-stone-100'
-											: 'bg-stone-800 text-stone-400'
+											? 'animate-pulse bg-neutral-700 text-neutral-100'
+											: 'bg-neutral-800 text-neutral-400'
 									}`}>
 									live
 								</span>
 							</div>
-							<p className='text-xs text-muted-foreground sm:text-sm'>
+							<p className='text-sm text-muted-foreground'>
 								{liveRules.length} regeln · zuletzt
 								aktualisiert: {formatSyncTime(lastSyncedAt)}
 							</p>
 						</div>
-						<div className='flex items-center gap-2'>
+						<div className='flex flex-wrap items-center gap-2'>
 							<CreateRuleSection
 								canCreateRules={canCreateRules}
 								formState={formState}
@@ -135,26 +136,32 @@ export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
 					</div>
 				</header>
 
-				{loadError && (
-					<p className='text-xs text-muted-foreground sm:text-sm'>
-						{loadError}
-					</p>
-				)}
-
-				{syncError && (
-					<p className='text-xs text-muted-foreground sm:text-sm'>
-						{syncError}
-					</p>
+				{hasPageNotice && (
+					<section
+						className='space-y-2'
+						role='status'
+						aria-live='polite'>
+						{loadError && (
+							<p className='border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm text-neutral-300'>
+								{loadError}
+							</p>
+						)}
+						{syncError && (
+							<p className='border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm text-neutral-300'>
+								{syncError}
+							</p>
+						)}
+					</section>
 				)}
 
 				{liveRules.length === 0 ? (
-					<p className='text-sm text-muted-foreground sm:text-base'>
+					<p className='border border-neutral-800 bg-neutral-950 px-3 py-3 text-sm text-muted-foreground sm:text-base'>
 						keine regeln verfügbar.
 					</p>
 				) : (
 					<section
 						className={`space-y-5 transition-all duration-150 sm:space-y-6 ${
-							isSyncing ? 'blur-[1.5px] opacity-90' : ''
+							isSyncing ? 'opacity-90' : ''
 						}`}>
 						{liveRules.map((rule, index) => (
 							<RuleCard

@@ -104,35 +104,35 @@ export function DeleteRuleDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='border-stone-700 bg-stone-900 text-stone-100 sm:max-w-md'>
+			<DialogContent className='border-neutral-700 bg-neutral-900 text-neutral-100 sm:max-w-md'>
 				<DialogHeader>
-					<DialogTitle className='flex items-center gap-2 text-sm uppercase tracking-[0.08em]'>
-						<AlertTriangleIcon className='h-4 w-4 text-stone-300' />
+					<DialogTitle className='flex items-center gap-2 text-base uppercase tracking-[0.08em]'>
+						<AlertTriangleIcon className='h-4 w-4 text-neutral-300' />
 						regel löschen
 					</DialogTitle>
-					<DialogDescription className='text-xs text-stone-400'>
+					<DialogDescription className='text-sm text-neutral-400'>
 						die regel wird deaktiviert und live aus der liste
 						entfernt
 					</DialogDescription>
 				</DialogHeader>
 
 				{rule && (
-					<div className='space-y-2 border border-stone-800 bg-stone-950 p-3'>
-						<p className='text-[11px] uppercase tracking-[0.08em] text-stone-500'>
+					<div className='space-y-2 border border-neutral-800 bg-neutral-950 p-3'>
+						<p className='text-xs uppercase tracking-[0.08em] text-neutral-500'>
 							vorschau
 						</p>
-						<p className='text-xs leading-relaxed text-stone-300'>
+						<p className='text-sm leading-relaxed text-neutral-300'>
 							{rulePreviewText}
 						</p>
 					</div>
 				)}
 
-				<div className='flex items-center justify-between border border-stone-800 bg-stone-950 p-2.5'>
+				<div className='flex items-center justify-between border border-neutral-800 bg-neutral-950 p-2.5'>
 					<div className='space-y-0.5'>
-						<p className='text-xs uppercase tracking-[0.08em] text-stone-300'>
+						<p className='text-sm uppercase tracking-[0.08em] text-neutral-300'>
 							löschung bestätigen
 						</p>
-						<p className='text-[11px] text-stone-500'>
+						<p className='text-xs text-neutral-500'>
 							ich will diese regel wirklich entfernen
 						</p>
 					</div>
@@ -147,7 +147,7 @@ export function DeleteRuleDialog({
 					<DialogClose asChild>
 						<button
 							type='button'
-							className={`${actionButtonClassName} border border-stone-700 bg-stone-900`}>
+							className={`${actionButtonClassName} border border-neutral-700 bg-neutral-900`}>
 							abbrechen
 						</button>
 					</DialogClose>
@@ -155,12 +155,12 @@ export function DeleteRuleDialog({
 						type='button'
 						onClick={() => void handleDeleteRule()}
 						disabled={isDeleting || !isConfirmed}
-						className={`${actionButtonClassName} bg-stone-200 text-stone-950 hover:bg-stone-300 disabled:bg-stone-800 disabled:text-stone-500`}>
+						className={`${actionButtonClassName} bg-neutral-200 text-neutral-950 hover:bg-neutral-300 disabled:bg-neutral-800 disabled:text-neutral-500`}>
 						{isDeleting ? 'wird gelöscht ...' : 'regel löschen'}
 					</button>
 				</div>
 
-				{error && <p className='text-xs text-stone-400'>{error}</p>}
+				{error && <p className='text-sm text-neutral-400'>{error}</p>}
 			</DialogContent>
 		</Dialog>
 	);
