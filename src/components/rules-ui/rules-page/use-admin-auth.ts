@@ -142,7 +142,9 @@ export function useAdminAuth(): UseAdminAuthResult {
 			const hasResolvedIdentity =
 				resolvedIdentityRef.current === identityKey;
 			const shouldSkipAdminStatusRefresh =
-				hasResolvedIdentity && event !== 'USER_UPDATED';
+				hasResolvedIdentity &&
+				event !== 'USER_UPDATED' &&
+				event !== 'TOKEN_REFRESHED';
 
 			if (shouldSkipAdminStatusRefresh) {
 				setIsAuthLoading(false);
@@ -207,7 +209,8 @@ export function useAdminAuth(): UseAdminAuthResult {
 			.getSession()
 			.then(({ data }) =>
 				syncSessionState('INITIAL_FETCH', data.session)
-			);
+			)
+			.catch(() => syncSessionState('INITIAL_FETCH', null));
 
 		const {
 			data: { subscription },
