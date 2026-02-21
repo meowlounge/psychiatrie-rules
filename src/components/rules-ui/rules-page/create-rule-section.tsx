@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 
 import { PlusIcon } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { RuleFormFields } from './rule-form-fields';
 import type { RuleCreateFormState, UseCreateRuleFormResult } from './types';
@@ -54,19 +54,16 @@ export function CreateRuleSection({
 	handleCreateRule,
 	resetCreateRuleFeedback,
 }: CreateRuleSectionProps) {
-	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-
-	useEffect(() => {
-		if (!createRuleSuccess) {
-			return;
-		}
-
-		setIsCreateDialogOpen(false);
-	}, [createRuleSuccess]);
+	const [isCreateDialogRequestedOpen, setIsCreateDialogRequestedOpen] =
+		useState(false);
+	const isCreateDialogOpen = useMemo(
+		() => (createRuleSuccess ? false : isCreateDialogRequestedOpen),
+		[createRuleSuccess, isCreateDialogRequestedOpen]
+	);
 
 	const handleOpenChange = useCallback(
 		(isOpen: boolean) => {
-			setIsCreateDialogOpen(isOpen);
+			setIsCreateDialogRequestedOpen(isOpen);
 
 			if (isOpen) {
 				resetCreateRuleFeedback();
