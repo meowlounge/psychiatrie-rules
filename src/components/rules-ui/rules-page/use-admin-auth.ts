@@ -207,9 +207,7 @@ export function useAdminAuth(): UseAdminAuthResult {
 
 		void supabase.auth
 			.getSession()
-			.then(({ data }) =>
-				syncSessionState('INITIAL_FETCH', data.session)
-			)
+			.then(({ data }) => syncSessionState('INITIAL_FETCH', data.session))
 			.catch(() => syncSessionState('INITIAL_FETCH', null));
 
 		const {
