@@ -1,7 +1,6 @@
 import { getSupabaseServerClient } from '@/lib/supabase';
 
-import type { CreateRuleInput, RuleRecord, RuleViewModel } from '@/types/rules';
-
+import type { CreateRuleInput, RuleRecord, RuleViewModel } from '@/types';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 
@@ -190,6 +189,89 @@ export async function createRule(input: unknown, createdBy?: string) {
 	const supabase = getSupabaseServerClient();
 
 	return createRuleFromSupabaseClient(supabase, input, createdBy);
+}
+
+export async function updateRuleFromSupabaseClient(
+	supabase: SupabaseClient,
+	ruleId: string,
+	input: unknown
+) {
+	const parsedInput = parseCreateRuleInput(input);
+	const note = parsedInput.note?.trim();
+	const shouldUseLimitedWindow = parsedInput.isLimitedTime;
+	const limitedStartAt = shouldUseLimitedWindow
+		? (parsedInput.limitedStartAt ?? null)
+		: null;
+	const limitedEndAt = shouldUseLimitedWindow
+		? (parsedInput.limitedEndAt ?? null)
+		: null;
+
+	const { data, error } = await supabase
+		.from('rules')
+		.update({
+			content: parsedInput.content,
+			note: note && note.length > 0 ? note : null,
+			is_new: parsedInput.isNew,
+			is_limited_time: shouldUseLimitedWindow,
+			limited_start_at: limitedStartAt,
+			limited_end_at: limitedEndAt,
+			priority: parsedInput.priority,
+		})
+		.eq('id', ruleId)
+		.eq('is_active', true)
+		.select('*')
+		.single();
+
+	if (error) {
+		if (error.code === 'PGRST116') {
+			throw new Error('Rule not found.');
+		}
+
+		throw new Error(`Failed to update rule: ${error.message}`);
+	}
+
+	const parsedRule = ruleRecordSchema.safeParse(data);
+
+	if (!parsedRule.success) {
+		throw new Error('Supabase returned an invalid rule payload.');
+	}
+
+	return mapRuleRecordToViewModel(parsedRule.data);
+}
+
+export async function updateRule(ruleId: string, input: unknown) {
+	const supabase = getSupabaseServerClient();
+
+	return updateRuleFromSupabaseClient(supabase, ruleId, input);
+}
+
+export async function deactivateRuleFromSupabaseClient(
+	supabase: SupabaseClient,
+	ruleId: string
+) {
+	const { error } = await supabase
+		.from('rules')
+		.update({
+			is_active: false,
+		})
+		.eq('id', ruleId)
+		.eq('is_active', true)
+		.select('id')
+		.single();
+
+	if (error) {
+		if (error.code === 'PGRST116') {
+			throw new Error('Rule not found.');
+		}
+
+		throw new Error(`Failed to delete rule: ${error.message}`);
+	}
+}
+
+export async function deactivateRule(ruleId: string) {
+	const supabase = getSupabaseServerClient();
+
+	return deactivateRuleFromSupabaseClient(supabase, ruleId);
 }
 
 export async function pingSupabaseRulesTable() {

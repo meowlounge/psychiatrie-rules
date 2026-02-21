@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 import type React from 'react';
 
-interface DottedBackgroundProps {
+export interface DottedBackgroundProps {
 	/**
 	 * The color of each dot.
 	 * @default 'var(--muted-foreground)'

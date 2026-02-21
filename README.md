@@ -4,15 +4,16 @@ Next.js App für psychiatrie-regeln mit Supabase als Datenquelle,
 Live-Updates via Supabase Realtime und stündlichem Keepalive.
 
 Der Discord-Bot ist extern.
-Diese Website liest Regeln live und kann mit einem kurzlebigen
-Admin-Link Regeln erstellen.
+Diese Website liest Regeln live und erlaubt Rule-Creation nur
+für einen explizit freigegebenen Admin-Account.
 
 ## Features
 
 - Dynamische Regeln aus Supabase (`public.rules`)
 - Rule-Props: `is_new`, `is_limited_time`, Zeitfenster, Priorität
 - Live-Updates ohne Reload über Supabase Realtime
-- No-Login Admin-Flow via signiertem Link (`?admin=...`)
+- Passwort-Login via Supabase (Dialog oben rechts)
+- Sichere Server-Prüfung für Admin-Aktionen (`RULES_ADMIN_EMAIL`)
 - Stündlicher Supabase-Keepalive (`/api/cron/supabase-keepalive`)
 
 ## Stack
@@ -39,9 +40,8 @@ bun install
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SECRET_KEY=...
-RULES_ADMIN_TOKEN_SECRET=...
-ADMIN_LINK_ISSUER_SECRET=...
-APP_BASE_URL=https://deine-domain.tld # optional, empfohlen
+RULES_ADMIN_EMAIL=dein-admin@beispiel.de
+NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL=dein-admin@beispiel.de # optional
 CRON_SECRET=... # optional, empfohlen für Keepalive-Route
 ```
 
@@ -68,27 +68,19 @@ In Supabase unter Database -> Replication:
 
 Wenn du nicht auf Vercel bist, rufe den Endpoint stündlich extern auf.
 
-## No-Login Admin-Link Flow
+## Passwort Admin-Flow
 
-1. Discord-Bot ruft `POST /api/admin-links` auf
-2. Bot sendet den erzeugten Link an einen Admin
-3. Admin öffnet `/?admin=<token>` und sieht das Rule-Form
-4. Rule-Create läuft über `POST /api/rules` mit Bearer-Token
+1. User öffnet den Account-Dialog (User-Icon oben rechts).
+2. Login startet `supabase.auth.signInWithPassword(...)`.
+3. Nach Login wird der Access Token gegen Supabase verifiziert.
+4. Nur wenn `user.email === RULES_ADMIN_EMAIL`:
+   Rule-Form sichtbar und `POST /api/rules` erlaubt.
 
-`POST /api/admin-links` Auth:
+Hinweis:
 
-- `Authorization: Bearer <ADMIN_LINK_ISSUER_SECRET>`
-- oder `x-admin-link-secret: <ADMIN_LINK_ISSUER_SECRET>`
-
-Beispiel Payload:
-
-```json
-{
-	"ttlMinutes": 30,
-	"actor": "discord-user-id",
-	"issuer": "discord-bot"
-}
-```
+- Wenn `NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL` fehlt, wird lokal eine
+  Login-E-Mail generiert (`<project-ref>@auth.local`).
+- Diese Login-E-Mail muss mit `RULES_ADMIN_EMAIL` übereinstimmen.
 
 ## Scripts
 

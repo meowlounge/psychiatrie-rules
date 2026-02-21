@@ -22,7 +22,7 @@ export default function RootLayout({
 		<html lang='de'>
 			<body
 				className={`${mono.variable} min-h-screen bg-background font-mono text-foreground antialiased select-none`}>
-				<div className='mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-12 lg:py-16'>
+				<div className='mx-auto w-full max-w-5xl px-5 py-12 sm:px-8 sm:py-14 lg:py-20'>
 					{children}
 				</div>
 			</body>

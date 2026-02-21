@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 import type { JSX } from 'react';
 
-type CodeProps = React.HTMLAttributes<HTMLElement>;
+export type CodeProps = React.HTMLAttributes<HTMLElement>;
 
 /**
  * A styled `<code>` component for displaying inline code snippets in a consistent, accessible format.

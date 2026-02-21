@@ -1,24 +1,16 @@
-import {
-	getBearerTokenFromRequest,
-	verifyRulesAdminToken,
-} from '@/lib/admin-access';
 import { createRule } from '@/lib/rules';
 
 import { NextResponse } from 'next/server';
 
+import { authorizeAdminRequest } from './route-auth';
+
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
-	const adminToken = getBearerTokenFromRequest(request);
+	const authorization = await authorizeAdminRequest(request);
 
-	if (!adminToken) {
-		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-	}
-
-	const verifiedToken = verifyRulesAdminToken(adminToken);
-
-	if (!verifiedToken.isValid || !verifiedToken.payload) {
-		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	if (!authorization.isAuthorized) {
+		return authorization.response;
 	}
 
 	const payload = await request.json().catch(() => null);
@@ -31,7 +23,7 @@ export async function POST(request: Request) {
 	}
 
 	try {
-		const rule = await createRule(payload, verifiedToken.payload.sub);
+		const rule = await createRule(payload, authorization.value.actor);
 
 		return NextResponse.json(
 			{ rule },
