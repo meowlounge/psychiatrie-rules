@@ -1,5 +1,4 @@
-import type { CreateRuleInput, RuleViewModel } from '@/types/rules';
-
+import type { CreateRuleInput, RuleViewModel } from '@/types';
 import type { ChangeEvent, FormEvent } from 'react';
 
 export interface RulesPageClientProps {

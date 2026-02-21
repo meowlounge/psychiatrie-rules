@@ -1,7 +1,6 @@
 import { getSupabaseServerClient } from '@/lib/supabase';
 
-import type { CreateRuleInput, RuleRecord, RuleViewModel } from '@/types/rules';
-
+import type { CreateRuleInput, RuleRecord, RuleViewModel } from '@/types';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 

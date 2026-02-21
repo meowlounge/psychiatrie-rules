@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 
-import type { RuleViewModel } from '@/types/rules';
-
+import type { RuleViewModel } from '@/types';
 import { PencilLineIcon, Trash2Icon } from 'lucide-react';
 import { useMemo } from 'react';
 

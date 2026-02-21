@@ -12,8 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 
-import type { RuleViewModel } from '@/types/rules';
-
+import type { RuleViewModel } from '@/types';
 import { AlertTriangleIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

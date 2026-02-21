@@ -3,8 +3,7 @@
 import { fetchActiveRulesFromSupabaseClient } from '@/lib/rules';
 import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
 
-import type { RuleViewModel } from '@/types/rules';
-
+import type { RuleViewModel } from '@/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { UseLiveRulesResult } from './types';

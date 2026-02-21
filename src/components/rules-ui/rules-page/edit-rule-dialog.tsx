@@ -10,8 +10,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 
-import type { RuleViewModel } from '@/types/rules';
-
+import type { RuleViewModel } from '@/types';
 import {
 	useCallback,
 	useEffect,

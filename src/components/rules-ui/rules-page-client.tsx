@@ -15,8 +15,7 @@ import {
 	getInputClassName,
 } from '@/components/rules-ui/rules-page/utils';
 
-import type { RuleViewModel } from '@/types/rules';
-
+import type { RuleViewModel } from '@/types';
 import { useCallback, useMemo, useState } from 'react';
 
 export function RulesPageClient({ rules, loadError }: RulesPageClientProps) {
