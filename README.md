@@ -1,104 +1,110 @@
 # psychiatrie-rules
 
-Next.js App für psychiatrie-regeln mit Supabase als Datenquelle,
-Live-Updates via Supabase Realtime und stündlichem Keepalive.
+A Next.js app for managing psychiatry rules, powered by Supabase. Rules update in real time via Supabase Realtime, with an hourly keepalive to prevent connection timeouts. The Discord bot is a separate, external service.
 
-Der Discord-Bot ist extern.
-Diese Website liest Regeln live und erlaubt Rule-Creation nur
-für einen explizit freigegebenen Admin-Account.
+Rule creation is restricted to a single explicitly configured admin account.
+
+---
 
 ## Features
 
-- Dynamische Regeln aus Supabase (`public.rules`)
-- Rule-Props: `is_new`, `is_limited_time`, Zeitfenster, Priorität
-- Live-Updates ohne Reload über Supabase Realtime
-- Passwort-Login via Supabase (Dialog oben rechts)
-- Sichere Server-Prüfung für Admin-Aktionen (`RULES_ADMIN_EMAIL`)
-- Stündlicher Supabase-Keepalive (`/api/cron/supabase-keepalive`)
+- Rules loaded dynamically from Supabase (`public.rules`)
+- Per-rule flags: `is_new`, `is_limited_time`, time windows, priority
+- Live updates without page reload via Supabase Realtime
+- Password login via Supabase (dialog in the top-right corner)
+- Server-side admin verification using `RULES_ADMIN_EMAIL`
+- Hourly Supabase keepalive at `/api/cron/supabase-keepalive`
+
+---
 
 ## Stack
 
-- Next.js 16 (App Router)
-- React 19 + TypeScript (strict)
-- Tailwind CSS + shadcn UI Komponenten
-- Supabase (`@supabase/supabase-js`)
-- Validation (`zod`)
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | React 19 + TypeScript (strict) |
+| Styling | Tailwind CSS + shadcn/ui |
+| Database | Supabase (`@supabase/supabase-js`) |
+| Validation | Zod |
+
+---
 
 ## Setup
 
-### 1. Dependencies
+### 1. Install dependencies
 
 ```bash
 bun install
 ```
 
-### 2. Umgebungsvariablen
+### 2. Environment variables
 
-`.env.local`:
+Create a `.env.local` file:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SECRET_KEY=...
-RULES_ADMIN_EMAIL=dein-admin@beispiel.de
-NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL=dein-admin@beispiel.de # optional
-CRON_SECRET=... # optional, empfohlen für Keepalive-Route
+RULES_ADMIN_EMAIL=your-admin@example.com
+NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL=your-admin@example.com  # optional
+CRON_SECRET=...                                          # optional, recommended for keepalive route
 ```
 
-Hinweis:
+> **Note:** `NEXT_PUBLIC_SUPABASE_ANON_KEY` can alternatively be set as `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`.
 
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` kann alternativ als
-  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` gesetzt werden.
+### 3. Apply the database schema
 
-### 3. Supabase Schema ausrollen
+Run `supabase/schema.sql` in the Supabase SQL Editor.
 
-Führe `supabase/schema.sql` im Supabase SQL Editor aus.
+### 4. Enable Realtime for the `rules` table
 
-### 4. Realtime für `rules` aktivieren
+In the Supabase dashboard, go to **Database → Replication** and enable Realtime for `public.rules`.
 
-In Supabase unter Database -> Replication:
+---
 
-- Realtime für Tabelle `public.rules` aktivieren
+## Keepalive (every 60 minutes)
 
-## Keepalive (60 Minuten)
+`vercel.json` includes a cron job (`0 * * * *`) that calls `GET /api/cron/supabase-keepalive`.
 
-- `vercel.json` enthält einen Cron `0 * * * *`
-- Endpoint: `GET /api/cron/supabase-keepalive`
-- Mit `CRON_SECRET` nur autorisierte Aufrufe erlaubt
+If `CRON_SECRET` is set, the endpoint will reject unauthorized requests. If you're not hosting on Vercel, call this endpoint hourly via an external scheduler.
 
-Wenn du nicht auf Vercel bist, rufe den Endpoint stündlich extern auf.
+---
 
-## Passwort Admin-Flow
+## Admin flow
 
-1. User öffnet den Account-Dialog (User-Icon oben rechts).
-2. Login startet `supabase.auth.signInWithPassword(...)`.
-3. Nach Login wird der Access Token gegen Supabase verifiziert.
-4. Nur wenn `user.email === RULES_ADMIN_EMAIL`:
-   Rule-Form sichtbar und `POST /api/rules` erlaubt.
+1. User opens the account dialog (user icon, top right).
+2. Login calls `supabase.auth.signInWithPassword(...)`.
+3. The returned access token is verified server-side against Supabase.
+4. If `user.email === RULES_ADMIN_EMAIL`, the rule creation form is shown and `POST /api/rules` is permitted.
 
-Hinweis:
+> **Note:** If `NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL` is not set, a local login email is derived from the project ref (`<project-ref>@auth.local`). This value must match `RULES_ADMIN_EMAIL`.
 
-- Wenn `NEXT_PUBLIC_SUPABASE_LOGIN_EMAIL` fehlt, wird lokal eine
-  Login-E-Mail generiert (`<project-ref>@auth.local`).
-- Diese Login-E-Mail muss mit `RULES_ADMIN_EMAIL` übereinstimmen.
+---
 
 ## Scripts
 
-- `bun dev` Entwicklungsserver
-- `bun run lint` Lint
-- `bun run build` Build
+```bash
+bun dev          # Start development server
+bun run lint     # Lint
+bun run build    # Production build
+```
 
-## Datenmodell
+---
 
-Relevante Tabelle: `public.rules`
+## Data model
 
-- `content text not null`
-- `note text`
-- `is_new boolean`
-- `is_limited_time boolean`
-- `limited_start_at timestamptz`
-- `limited_end_at timestamptz`
-- `is_active boolean`
-- `priority integer`
-- `created_by text`
-- `created_at`, `updated_at`
+Table: `public.rules`
+
+| Column | Type | Description |
+|---|---|---|
+| `content` | `text NOT NULL` | Rule text |
+| `note` | `text` | Optional note |
+| `is_new` | `boolean` | Marks rule as new |
+| `is_limited_time` | `boolean` | Rule is time-limited |
+| `limited_start_at` | `timestamptz` | Start of time window |
+| `limited_end_at` | `timestamptz` | End of time window |
+| `is_active` | `boolean` | Whether rule is active |
+| `priority` | `integer` | Display priority |
+| `created_by` | `text` | Creator identifier |
+| `created_at` | `timestamptz` | Creation timestamp |
+| `updated_at` | `timestamptz` | Last update timestamp |
